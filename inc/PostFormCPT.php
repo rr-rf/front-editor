@@ -73,10 +73,12 @@ class PostFormCPT
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
             return;
 
+        $post_ID = isset($_POST['post_id']) ? sanitize_text_field($_POST['post_id']) : false;
 
         $data = [
             'settings' => [
-                'post_type' => esc_html($_POST['post_type']),
+                'post_type' => sanitize_text_field($_POST['post_type']),
+                'post_id' => $post_ID,
             ],
             'formBuilder_options' => [
                 //'prepend' => sprintf('<h2>%s</h2>', __('Post Title', 'front-editor')),
@@ -112,6 +114,11 @@ class PostFormCPT
                 ]
             ],
         ];
+
+
+        if ($post_ID) {
+            $data['formBuilderData'] = get_post_meta($post_ID, 'formBuilderData',true);
+        }
 
         /**
          * Default controls
@@ -172,11 +179,11 @@ class PostFormCPT
         switch ($action) {
             case 'edit':
 
-                require FE_PLUGIN_DIR_PATH . 'templates/post-form.php';
+                require FE_PLUGIN_DIR_PATH . 'templates/admin/post-form.php';
                 break;
 
             case 'add-new':
-                require FE_PLUGIN_DIR_PATH . 'templates/post-form.php';
+                require FE_PLUGIN_DIR_PATH . 'templates/admin/post-form.php';
                 break;
 
             default:
@@ -185,6 +192,11 @@ class PostFormCPT
         }
     }
 
+    /**
+     * Updating post
+     *
+     * @return void
+     */
     public static function save_post_front_settings()
     {
 
@@ -200,22 +212,40 @@ class PostFormCPT
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
             return;
 
-        $post_ID = $_POST['post_ID'];
-
-        /**
-         * Check user roles
-         */
-        if (!current_user_can('edit_post', $post_ID))
-            return;
+        $title = isset($_POST['fe_title']) ? $_POST['fe_title'] : __('Sample Form', 'front-editor');
+        if (!empty($_POST['post_id']) && $_POST['post_id'] !== 'new') {
+            $post_ID = intval(sanitize_text_field($_POST['post_id']));
+            wp_update_post([
+                'ID'           => $post_ID,
+                'post_title'   => $title, 
+            ]);
+        } elseif (!empty($_POST['post_id']) && $_POST['post_id'] === 'new') {
+            $post_ID = wp_insert_post([
+                'post_title' => $title,
+                'post_type' => 'fe_post_form',
+                'post_status'   => 'publish',
+            ]);
+        }
 
         /**
          * Saving data
          */
-        // update_post_meta($post_ID, 'front_editor_first_name', sanitize_text_field($_POST['front_editor_first_name']));
-        // update_post_meta($post_ID, 'front_editor_last_name', sanitize_text_field($_POST['front_editor_last_name']));
-        // update_post_meta($post_ID, 'front_editor_email', sanitize_email($_POST['front_editor_email']));
-        // update_post_meta($post_ID, 'front_editor_subject', sanitize_text_field($_POST['front_editor_subject']));
-        // update_post_meta($post_ID, 'front_editor_message', sanitize_text_field($_POST['front_editor_message']));
+        if (!empty($_POST['formBuilderData'])) {
+            update_post_meta($post_ID, 'formBuilderData', $_POST['formBuilderData']);
+        }
+
+        if (!empty($_POST['post_type'])) {
+            update_post_meta($post_ID, 'fe_post_type', $_POST['post_type']);
+        }
+
+        wp_send_json_success([
+            'post_id' => $post_ID,
+            'message' => [
+                'title' => __('Thanks', 'front-editor'),
+                'message' => __('Post Updated'),
+                'status' => 'success'
+            ]
+        ]);
     }
 
     /**

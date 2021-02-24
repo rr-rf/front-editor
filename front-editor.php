@@ -49,6 +49,8 @@ class BestFrontEndEditor
 
     add_filter('post_row_actions', [__CLASS__, 'add_link_to_edit_this_post'], 10, 2);
 
+    add_filter('admin_footer', [__CLASS__, 'chang_post_form_add_new'], 10);
+
     add_action('BFE_activate', [__CLASS__, 'activate_user_ability_to_upload_files']);
 
     add_action('BFE_deactivate', [__CLASS__, 'disable_user_ability_to_upload_files']);
@@ -141,7 +143,7 @@ class BestFrontEndEditor
    */
   public static function add_link_to_edit_this_post($actions, $post)
   {
-    if ($post->post_type == 'post') {
+    if ($post->post_type !== 'fe_post_form') {
       if ($edit_link = Editor::get_post_edit_link($post->ID)) {
         $actions['bfe_front_editor_link'] = sprintf(
           '<a target="_blank" style="color:#388ffe;" href="%s">%s</a>',
@@ -151,7 +153,26 @@ class BestFrontEndEditor
       }
     }
 
+    /**
+     * Changing postForm archive page edit link
+     */
+    if($post->post_type === 'fe_post_form'){
+      $actions['edit'] = sprintf(
+        '<a target="_blank" href="%s">%s</a>',
+        home_url(sprintf('/wp-admin/edit.php?page=fe-post-forms&action=edit&id=%s',$post->ID)),
+        __('Edit', 'front-editor')
+      );
+      
+    }
+
     return $actions;
+  }
+
+  public static function chang_post_form_add_new(){
+    printf(
+      '<script>jQuery(".post-type-fe_post_form .page-title-action").attr("href","%s")</script>',
+      home_url('/wp-admin/admin.php?page=fe-post-forms&action=add-new')
+  );
   }
 
   public static function activate_user_ability_to_upload_files()

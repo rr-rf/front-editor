@@ -3985,7 +3985,9 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
           formBuilderOptions.disable_attr.map(function (val) {
             $(document).find(val).prop('disabled', true);
-          });
+          }); // Adding data 
+
+          formBuilderContainer.actions.setData(response.formBuilderData);
         });
       },
       error: function error(_error) {
@@ -3993,27 +3995,28 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
       }
     });
   }
+  /**
+   * Saving form data
+   */
+
 
   function save_form_data() {
-    var formArray = $('#post').serializeArray(),
+    var formArray = $('#fe-fromBuilder').serializeArray(),
         data = objectifyForm(formArray);
     data.formBuilderData = formBuilderContainer.actions.getData('json', true);
     data.action = 'save_post_front_settings';
-    data.lala = 'lala';
     console.log(data);
     wp.ajax.send('save_post_front_settings', {
       data: data,
       success: function success(response) {
-        console.log(response);
+        var message = response.message;
+        $('#post_id').val(response.post_id);
+        Swal.fire(message.title, message.message, message.status);
       },
       error: function error(_error2) {
         console.log(_error2);
       }
-    }); // $.post(`http://front-editor.local/wp-json/fe/v1/updateFormBuilder/post/`,
-    //     data,
-    //     function (data, status) {
-    //         alert("Data: " + data + "\nStatus: " + status);
-    //     });
+    });
   }
 
   function objectifyForm(formArray) {
