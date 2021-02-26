@@ -4150,7 +4150,7 @@ __webpack_require__.r(__webpack_exports__);
   }
 
   blocks.registerBlockType('bfe/bfe-block', {
-    title: __('Front Editor', 'front-editor'),
+    title: __('Front Editor', FE_TEXT_DOMAIN),
     icon: 'edit',
     category: 'common',
     multiple: false,

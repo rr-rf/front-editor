@@ -31,7 +31,7 @@ class Editor
 			array(
 				'type' => 'paragraph',
 				'data' => array(
-					'text' => __('Add content', 'front-editor'),
+					'text' => __('Add content', FE_TEXT_DOMAIN),
 				),
 			),
 		);
@@ -55,7 +55,7 @@ class Editor
 
 		$post_id       = 'new';
 		$editor_data   = 'new';
-		$button_text   = __('Publish', 'front-editor');
+		$button_text   = __('Publish', FE_TEXT_DOMAIN);
 		$html_content  = '';
 		$new_post_link = self::get_editor_page_link();
 
@@ -73,16 +73,16 @@ class Editor
 			$post_id = intval(sanitize_text_field($_GET['post_id']));
 
 			if (!$post_id) {
-				return sprintf('<h2>%s</h2>', __('The post you trying to edit is not exist, please create a new one', 'front-editor'));
+				return sprintf('<h2>%s</h2>', __('The post you trying to edit is not exist, please create a new one', FE_TEXT_DOMAIN));
 			}
 
 			if (!get_post_status($post_id)) {
-				return sprintf('<h2>%s</h2>', __('The post you trying to edit is not exist, please create a new one', 'front-editor'));
+				return sprintf('<h2>%s</h2>', __('The post you trying to edit is not exist, please create a new one', FE_TEXT_DOMAIN));
 			}
 		}
 
 		if (!self::can_edit_post(0, $post_id)) {
-			return sprintf('<h2>%s</h2>', __('You do not have permission to edit this post', 'front-editor'));
+			return sprintf('<h2>%s</h2>', __('You do not have permission to edit this post', FE_TEXT_DOMAIN));
 		}
 
 		if ('new' !== $post_id) {
@@ -106,7 +106,7 @@ class Editor
 			$post         = get_post($post_id);
 			$html_content = $post->post_content;
 
-			$button_text = __('Update', 'front-editor');
+			$button_text = __('Update', FE_TEXT_DOMAIN);
 		} else {
 			$editor_data = self::example_editor_data();
 		}
@@ -118,73 +118,73 @@ class Editor
 			'data'              => apply_filters('fe_localize_editor_content_data', $editor_data),
 			'html_post_content' => $html_content,
 			'translations'      => [
-				'editor_field_placeholder' => __('Start writing or enter Tab to choose a block', 'front-editor'),
+				'editor_field_placeholder' => __('Start writing or enter Tab to choose a block', FE_TEXT_DOMAIN),
 				'save_button' => [
-					'publish'  => __('Publish', 'front-editor'),
-					'updating' => sprintf('%s...', __('Updating', 'front-editor')),
-					'update'   => __('Update', 'front-editor'),
+					'publish'  => __('Publish', FE_TEXT_DOMAIN),
+					'updating' => sprintf('%s...', __('Updating', FE_TEXT_DOMAIN)),
+					'update'   => __('Update', FE_TEXT_DOMAIN),
 				],
 				'i18n' => [
 					'messages' => [
 						'ui' => [
 							"blockTunes" => [
 								"toggler" => [
-									"Click to tune" => __("Click to tune", 'front-editor'),
-									"or drag to move" => __("or drag to move", 'front-editor')
+									"Click to tune" => __("Click to tune", FE_TEXT_DOMAIN),
+									"or drag to move" => __("or drag to move", FE_TEXT_DOMAIN)
 								]
 							],
 							'inlineToolbar' => [
 								'converter' => [
-									"Convert to" => __("Convert to", 'front-editor')
+									"Convert to" => __("Convert to", FE_TEXT_DOMAIN)
 
 								]
 							],
 							"toolbar" => [
 								"toolbox" => [
-									"Add" => __("Add", 'front-editor')
+									"Add" => __("Add", FE_TEXT_DOMAIN)
 								]
 							]
 						],
 						'toolNames' => [
-							"Text" => __("Text", 'front-editor'),
-							"Heading" => __("Heading", 'front-editor'),
-							"List" => __("List", 'front-editor'),
-							"Warning" => __("Warning", 'front-editor'),
-							"Checklist" => __("Checklist", 'front-editor'),
-							"Quote" => __("Quote", 'front-editor'),
-							"Code" => __("Code", 'front-editor'),
-							"Delimiter" => __("Delimiter", 'front-editor'),
-							"Raw HTML" => __("Raw HTML", 'front-editor'),
-							"Table" => __("Table", 'front-editor'),
-							"Link" => __("Link", 'front-editor'),
-							"Marker" => __("Marker", 'front-editor'),
-							"Bold" => __("Bold", 'front-editor'),
-							"Italic" => __("Italic", 'front-editor'),
-							"InlineCode" => __("InlineCode", 'front-editor'),
-							"Image & Gallery" => __("Image & Gallery", 'front-editor'),
-							"Image" => __("Image", 'front-editor')
+							"Text" => __("Text", FE_TEXT_DOMAIN),
+							"Heading" => __("Heading", FE_TEXT_DOMAIN),
+							"List" => __("List", FE_TEXT_DOMAIN),
+							"Warning" => __("Warning", FE_TEXT_DOMAIN),
+							"Checklist" => __("Checklist", FE_TEXT_DOMAIN),
+							"Quote" => __("Quote", FE_TEXT_DOMAIN),
+							"Code" => __("Code", FE_TEXT_DOMAIN),
+							"Delimiter" => __("Delimiter", FE_TEXT_DOMAIN),
+							"Raw HTML" => __("Raw HTML", FE_TEXT_DOMAIN),
+							"Table" => __("Table", FE_TEXT_DOMAIN),
+							"Link" => __("Link", FE_TEXT_DOMAIN),
+							"Marker" => __("Marker", FE_TEXT_DOMAIN),
+							"Bold" => __("Bold", FE_TEXT_DOMAIN),
+							"Italic" => __("Italic", FE_TEXT_DOMAIN),
+							"InlineCode" => __("InlineCode", FE_TEXT_DOMAIN),
+							"Image & Gallery" => __("Image & Gallery", FE_TEXT_DOMAIN),
+							"Image" => __("Image", FE_TEXT_DOMAIN)
 						],
 						'tools' => [
 							'warning' => [
-								"Title" => __("Title", 'front-editor'),
-								"Message" => __("Message", 'front-editor')
+								"Title" => __("Title", FE_TEXT_DOMAIN),
+								"Message" => __("Message", FE_TEXT_DOMAIN)
 							],
 							'link' => [
-								"Add a link" => __("Add a link", 'front-editor'),
+								"Add a link" => __("Add a link", FE_TEXT_DOMAIN),
 							],
 							'stub' => [
-								"The block can not be displayed correctly." => __("The block can not be displayed correctly.", 'front-editor'),
+								"The block can not be displayed correctly." => __("The block can not be displayed correctly.", FE_TEXT_DOMAIN),
 							]
 						],
 						'blockTunes' => [
 							'delete' => [
-								"Delete" => __("Delete", 'front-editor'),
+								"Delete" => __("Delete", FE_TEXT_DOMAIN),
 							],
 							'moveUp' => [
-								"Move up" => __("Move up", 'front-editor'),
+								"Move up" => __("Move up", FE_TEXT_DOMAIN),
 							],
 							'moveDown' => [
-								"Move down" => __("Move down", 'front-editor'),
+								"Move down" => __("Move down", FE_TEXT_DOMAIN),
 							]
 						]
 					]

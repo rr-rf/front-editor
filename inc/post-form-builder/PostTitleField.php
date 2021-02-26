@@ -23,7 +23,7 @@ class PostTitleField
 
     public static function add_field_settings($data)
     {
-        $field_label = __(self::$field_label, 'front-editor');
+        $field_label = __(self::$field_label, FE_TEXT_DOMAIN);
         /**
          * Adding field
          */

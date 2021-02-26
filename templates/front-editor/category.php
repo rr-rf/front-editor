@@ -1,6 +1,6 @@
 <div class="select-wrap category">
-    <label for="category-select"><?php echo esc_attr(__('Select category', 'front-editor')); ?></label>
-    <select id="bfe-category" name="category-select" <?php echo isset($attributes['category_multiple']) ? 'multiple' : ''; ?> data-placeholder="<?php echo esc_attr(__('Select category', 'front-editor')); ?>">
+    <label for="category-select"><?php echo esc_attr(__('Select category', FE_TEXT_DOMAIN)); ?></label>
+    <select id="bfe-category" name="category-select" <?php echo isset($attributes['category_multiple']) ? 'multiple' : ''; ?> data-placeholder="<?php echo esc_attr(__('Select category', FE_TEXT_DOMAIN)); ?>">
         <option data-placeholder="true"></option>
         <?php
         $post_cat_id = 0;

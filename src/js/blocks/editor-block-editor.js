@@ -42,7 +42,7 @@ import { withState } from '@wordpress/compose';
 
 
     blocks.registerBlockType('bfe/bfe-block', {
-        title: __('Front Editor', 'front-editor'),
+        title: __('Front Editor', FE_TEXT_DOMAIN),
         icon: 'edit',
         category: 'common',
         multiple: false,

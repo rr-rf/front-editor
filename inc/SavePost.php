@@ -87,16 +87,16 @@ class SavePost
 	public static function update_or_add_post()
 	{
 		if (!wp_verify_nonce($_POST['nonce'], 'bfe_nonce')) {
-			wp_send_json_error(array('message' => __('Security error, please update page', 'front-editor')));
+			wp_send_json_error(array('message' => __('Security error, please update page', FE_TEXT_DOMAIN)));
 		}
 
 		if (empty($_POST['post_title'])) {
-			wp_send_json_error(array('message' => __('Please add post title', 'front-editor')));
+			wp_send_json_error(array('message' => __('Please add post title', FE_TEXT_DOMAIN)));
 		}
 
 		$post_title = sanitize_text_field($_POST['post_title']);
 		if (empty($post_title)) {
-			wp_send_json_error(array('message' => __('Please add correct post title', 'front-editor')));
+			wp_send_json_error(array('message' => __('Please add correct post title', FE_TEXT_DOMAIN)));
 		}
 
 		$editor_data_json = wp_kses_data($_POST['editor_data']);
@@ -108,11 +108,11 @@ class SavePost
 		if (!empty($post_id) && 'new' !== $post_id) {
 			$post_id = intval($post_id);
 			if (!$post_id) {
-				wp_send_json_error(array('message' => __('The post you trying to edit is not exist, please create a new one', 'front-editor')));
+				wp_send_json_error(array('message' => __('The post you trying to edit is not exist, please create a new one', FE_TEXT_DOMAIN)));
 			}
 
 			if (!get_post_status($post_id)) {
-				wp_send_json_error(array('message' => __('The post you trying to edit is not exist, please create a new one', 'front-editor')));
+				wp_send_json_error(array('message' => __('The post you trying to edit is not exist, please create a new one', FE_TEXT_DOMAIN)));
 			}
 		}
 
@@ -141,7 +141,7 @@ class SavePost
 			 * Checking is user has access to edit post
 			 */
 			if (!Editor::can_edit_post($cur_user_id, $post_id)) {
-				wp_send_json_error(array('message' => __('You do not have permission to edit this post', 'front-editor')));
+				wp_send_json_error(array('message' => __('You do not have permission to edit this post', FE_TEXT_DOMAIN)));
 			}
 			$post_data['ID'] = $post_id;
 			self::update_post($post_id, $post_data);
@@ -171,7 +171,7 @@ class SavePost
 			array(
 				'url'     => get_the_permalink($post_id),
 				'post_id' => $post_id,
-				'message' => ('new' === $post_id) ? __('New post created', 'front-editor') : __('Post updated', 'front-editor'),
+				'message' => ('new' === $post_id) ? __('New post created', FE_TEXT_DOMAIN) : __('Post updated', FE_TEXT_DOMAIN),
 			)
 		);
 	}
@@ -310,7 +310,7 @@ class SavePost
 
 		if (!empty($image)) {
 			if (!file_is_displayable_image($image['tmp_name'])) {
-				wp_send_json_error(array('message' => __('Image type is not supported, please select another image', 'front-editor')));
+				wp_send_json_error(array('message' => __('Image type is not supported, please select another image', FE_TEXT_DOMAIN)));
 				return;
 			}
 

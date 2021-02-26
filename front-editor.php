@@ -38,6 +38,7 @@ class BestFrontEndEditor
     define('FE_PLUGIN_URL', plugins_url('', __FILE__));
     define('FE_PLUGIN_DIR_PATH', plugin_dir_path(__FILE__));
     define('FE_Template_PATH', plugin_dir_path(__FILE__) . 'templates/');
+    define('FE_TEXT_DOMAIN', 'front-editor');
 
     register_activation_hook(__FILE__, [__CLASS__, 'fe_plugin_activate']);
 
@@ -48,8 +49,6 @@ class BestFrontEndEditor
     add_action('plugins_loaded', [__CLASS__, 'add_components']);
 
     add_filter('post_row_actions', [__CLASS__, 'add_link_to_edit_this_post'], 10, 2);
-
-    add_filter('admin_footer', [__CLASS__, 'chang_post_form_add_new'], 10);
 
     add_action('BFE_activate', [__CLASS__, 'activate_user_ability_to_upload_files']);
 
@@ -102,7 +101,7 @@ class BestFrontEndEditor
    */
   public static function true_load_plugin_textdomain()
   {
-    load_plugin_textdomain('front-editor', false, dirname(plugin_basename(__FILE__)) . '/languages/');
+    load_plugin_textdomain(FE_TEXT_DOMAIN, false, dirname(plugin_basename(__FILE__)) . '/languages/');
   }
 
   /**
@@ -148,7 +147,7 @@ class BestFrontEndEditor
         $actions['bfe_front_editor_link'] = sprintf(
           '<a target="_blank" style="color:#388ffe;" href="%s">%s</a>',
           $edit_link,
-          __('Edit in front editor', 'front-editor')
+          __('Edit in front editor', FE_TEXT_DOMAIN)
         );
       }
     }
@@ -156,23 +155,28 @@ class BestFrontEndEditor
     /**
      * Changing postForm archive page edit link
      */
-    if($post->post_type === 'fe_post_form'){
+    if ($post->post_type === 'fe_post_form') {
       $actions['edit'] = sprintf(
         '<a target="_blank" href="%s">%s</a>',
-        home_url(sprintf('/wp-admin/edit.php?page=fe-post-forms&action=edit&id=%s',$post->ID)),
-        __('Edit', 'front-editor')
+        home_url(sprintf('/wp-admin/edit.php?page=fe-post-forms&action=edit&id=%s', $post->ID)),
+        __('Edit', FE_TEXT_DOMAIN)
       );
-      
+
+      printf(
+        '<script>jQuery("#post-%s a.row-title").attr("href","%s")</script>',
+        $post->ID,
+        home_url(sprintf('/wp-admin/edit.php?page=fe-post-forms&action=edit&id=%s', $post->ID))
+      );
+
+      printf(
+        '<script>jQuery(".post-type-fe_post_form .page-title-action").attr("href","%s")</script>',
+        home_url('/wp-admin/admin.php?page=fe-post-forms&action=add-new')
+      );
+
+      unset($actions['inline hide-if-no-js']);
     }
 
     return $actions;
-  }
-
-  public static function chang_post_form_add_new(){
-    printf(
-      '<script>jQuery(".post-type-fe_post_form .page-title-action").attr("href","%s")</script>',
-      home_url('/wp-admin/admin.php?page=fe-post-forms&action=add-new')
-  );
   }
 
   public static function activate_user_ability_to_upload_files()

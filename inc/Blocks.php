@@ -61,29 +61,29 @@ class Block
         $data = [
             'fe_edit_link' => Editor::get_post_edit_link(get_the_ID()),
             'translations' => [
-                'fe_edit_link_text' => __('Edit in front editor', 'front-editor'),
-                'fe_edit_message' => __('This post created with the Front Editor plugin. Please edit it using Front Editor to not have issues with the plugin!', 'front-editor'),
-                'publish' => __('Publish', 'front-editor'),
-                'pending' => __('Pending', 'front-editor'),
-                'post_status' => __('Post status', 'front-editor'),
-                'post_status_desc' => __('when user is adding the post what status it must have', 'front-editor'),
-                'title' => __('Front editor settings', 'front-editor'),
-                'post_image' => __('Post image', 'front-editor'),
-                'post_category' => __('Post category', 'front-editor'),
-                'show_empty_category' => __('Show empty categories', 'front-editor'),
-                'category_multiple' => __('Choose multiple categories', 'front-editor'),
-                'category_settings_title' => __('Category settings', 'front-editor'),
-                'post_tags' => __('Post tags', 'front-editor'),
-                'tags_settings_title' => __('Tags settings', 'front-editor'),
-                'tags_add_new' => __('Ability to add new tags', 'front-editor'),
-                'display' => __('Display', 'front-editor'),
-                'always_display' => __('Always display', 'front-editor'),
-                'add_new_button' => __('Add new button', 'front-editor'),
-                'require' => __('Display and require', 'front-editor'),
-                'disable' => __('Disable this field', 'front-editor'),
-                'editor_settings_title' => __('Editor plugins', 'front-editor'),
-                'only_in_pro' => __('Available only in pro version.', 'front-editor'),
-                'wp_media_uploader' => __('Image and Gallery using WP Media Uploader', 'front-editor')
+                'fe_edit_link_text' => __('Edit in front editor', FE_TEXT_DOMAIN),
+                'fe_edit_message' => __('This post created with the Front Editor plugin. Please edit it using Front Editor to not have issues with the plugin!', FE_TEXT_DOMAIN),
+                'publish' => __('Publish', FE_TEXT_DOMAIN),
+                'pending' => __('Pending', FE_TEXT_DOMAIN),
+                'post_status' => __('Post status', FE_TEXT_DOMAIN),
+                'post_status_desc' => __('when user is adding the post what status it must have', FE_TEXT_DOMAIN),
+                'title' => __('Front editor settings', FE_TEXT_DOMAIN),
+                'post_image' => __('Post image', FE_TEXT_DOMAIN),
+                'post_category' => __('Post category', FE_TEXT_DOMAIN),
+                'show_empty_category' => __('Show empty categories', FE_TEXT_DOMAIN),
+                'category_multiple' => __('Choose multiple categories', FE_TEXT_DOMAIN),
+                'category_settings_title' => __('Category settings', FE_TEXT_DOMAIN),
+                'post_tags' => __('Post tags', FE_TEXT_DOMAIN),
+                'tags_settings_title' => __('Tags settings', FE_TEXT_DOMAIN),
+                'tags_add_new' => __('Ability to add new tags', FE_TEXT_DOMAIN),
+                'display' => __('Display', FE_TEXT_DOMAIN),
+                'always_display' => __('Always display', FE_TEXT_DOMAIN),
+                'add_new_button' => __('Add new button', FE_TEXT_DOMAIN),
+                'require' => __('Display and require', FE_TEXT_DOMAIN),
+                'disable' => __('Disable this field', FE_TEXT_DOMAIN),
+                'editor_settings_title' => __('Editor plugins', FE_TEXT_DOMAIN),
+                'only_in_pro' => __('Available only in pro version.', FE_TEXT_DOMAIN),
+                'wp_media_uploader' => __('Image and Gallery using WP Media Uploader', FE_TEXT_DOMAIN)
             ],
             'editor_pro_settings' => [
                 'table_block' => false,
@@ -207,7 +207,7 @@ class Block
         }
 
         if ($post_image === 'require' && empty($_FILES['image']) && empty($_POST['thumb_img_id'])) {
-            wp_send_json_error(['message' => __('The featured image is required', 'front-editor')]);
+            wp_send_json_error(['message' => __('The featured image is required', FE_TEXT_DOMAIN)]);
         }
 
         return $post_data;
@@ -255,7 +255,7 @@ class Block
         }
 
         if ($post_category_settings === 'require' && empty($post_category_val)) {
-            wp_send_json_error(['message' => __('The category selection is required', 'front-editor')]);
+            wp_send_json_error(['message' => __('The category selection is required', FE_TEXT_DOMAIN)]);
         }
 
         if ($post_category_val === 'null') {
@@ -312,7 +312,7 @@ class Block
         }
 
         if ($post_tags === 'require' && empty($_POST['tags'])) {
-            wp_send_json_error(['message' => __('The category selection is required', 'front-editor')]);
+            wp_send_json_error(['message' => __('The category selection is required', FE_TEXT_DOMAIN)]);
         }
 
         if (sanitize_text_field($_POST['tags']) === 'null') {

@@ -35,7 +35,7 @@ class TaxonomiesFields
                 [
                     'label' => $tax->label,
                     'attrs' => [
-                        'placeholder' => sprintf('%s %s', __('Select', 'front-editor'), $tax->label),
+                        'placeholder' => sprintf('%s %s', __('Select', FE_TEXT_DOMAIN), $tax->label),
                         'type' => $tax_type
                     ],
                     'icon' => '<span class="dashicons dashicons-list-view"></span>'
@@ -61,7 +61,7 @@ class TaxonomiesFields
             $data['formBuilder_options']['typeUserAttrs'][$tax->name] =
                 [
                     'order' => [
-                        'label' => __('Order', 'front-editor'),
+                        'label' => __('Order', FE_TEXT_DOMAIN),
                         'options' => [
                             'asc' => 'ASC',
                             'desc' => 'Desc'
@@ -69,12 +69,12 @@ class TaxonomiesFields
                         'type' => 'select',
                     ],
                     'multiple' => [
-                        'label' => __('Allow Multiple Selections', 'front-editor'),
+                        'label' => __('Allow Multiple Selections', FE_TEXT_DOMAIN),
                         'value' => false,
                         'type' => 'checkbox',
                     ],
                     'multiple' => [
-                        'label' => __('Allow Add New', 'front-editor'),
+                        'label' => __('Allow Add New', FE_TEXT_DOMAIN),
                         'value' => false,
                         'type' => 'checkbox',
                     ],

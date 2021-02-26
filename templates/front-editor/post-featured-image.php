@@ -8,7 +8,7 @@ if (has_post_thumbnail($post_id)) {
 
 ?>
 <div class="image_loader editor-button <?= $class ?? '' ?>" thumb_exist="<?= $thumb_exist ?? 0 ?>">
-    <input name="post_thumbnail" type='file' id="img_inp" accept="image/*" title="<?php echo __('Set featured image', 'front-editor'); ?>"/>
+    <input name="post_thumbnail" type='file' id="img_inp" accept="image/*" title="<?php echo __('Set featured image', FE_TEXT_DOMAIN); ?>"/>
     <label class="thumbnail" for="img_inp">
         <img src="<?= FE_PLUGIN_URL . '/assets/img/photo.svg' ?>" class="button-icon">
     </label>

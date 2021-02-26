@@ -23,7 +23,6 @@ class PostFormCPT
         require_once __DIR__ . '/post-form-builder/PostTitleField.php';
         require_once __DIR__ . '/post-form-builder/EditorJsField.php';
         require_once __DIR__ . '/post-form-builder/TaxonomiesFields.php';
-
         /**
          * Registering custom post type
          */
@@ -81,7 +80,7 @@ class PostFormCPT
                 'post_id' => $post_ID,
             ],
             'formBuilder_options' => [
-                //'prepend' => sprintf('<h2>%s</h2>', __('Post Title', 'front-editor')),
+                //'prepend' => sprintf('<h2>%s</h2>', __('Post Title', FE_TEXT_DOMAIN)),
                 'fields' => [], // New field creation
                 'typeUserAttrs' => [], // Custom attr settings for fields,
                 'disabledFieldButtons' => [],
@@ -96,21 +95,22 @@ class PostFormCPT
                 'defaultControls' => ['paragraph', 'text', 'textarea'],
                 'controls_group' => [
                     'post_fields' => [
-                        'label' => __('Post Fields', 'front-editor'),
+                        'label' => __('Post Fields', FE_TEXT_DOMAIN),
                         'types' => []
                     ],
                     'taxonomies' => [
-                        'label' => __('Taxonomies', 'front-editor'),
+                        'label' => __('Taxonomies', FE_TEXT_DOMAIN),
                         'types' => []
                     ],
                     'custom_fields' => [
-                        'label' => __('Custom Fields', 'front-editor'),
+                        'label' => __('Custom Fields', FE_TEXT_DOMAIN),
                         'types' => []
                     ],
                 ],
                 'controlOrder' => [],
+                'disabledActionButtons' => ['data','clear','save'],
                 'messages' => [
-                    'max_fields_warning' => __('You already have this field in the form', 'front-editor')
+                    'max_fields_warning' => __('You already have this field in the form', FE_TEXT_DOMAIN)
                 ]
             ],
         ];
@@ -212,7 +212,7 @@ class PostFormCPT
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
             return;
 
-        $title = isset($_POST['fe_title']) ? $_POST['fe_title'] : __('Sample Form', 'front-editor');
+        $title = isset($_POST['fe_title']) ? $_POST['fe_title'] : __('Sample Form', FE_TEXT_DOMAIN);
         if (!empty($_POST['post_id']) && $_POST['post_id'] !== 'new') {
             $post_ID = intval(sanitize_text_field($_POST['post_id']));
             wp_update_post([
@@ -241,7 +241,7 @@ class PostFormCPT
         wp_send_json_success([
             'post_id' => $post_ID,
             'message' => [
-                'title' => __('Thanks', 'front-editor'),
+                'title' => __('Thanks', FE_TEXT_DOMAIN),
                 'message' => __('Post Updated'),
                 'status' => 'success'
             ]
@@ -294,18 +294,18 @@ class PostFormCPT
         register_post_type('fe_post_form', [
             'label'  => null,
             'labels' => [
-                'name'               => __('Post Form', 'front-editor'),
-                'singular_name'      => __('Post Form', 'front-editor'),
-                'add_new'            => __('Add Post Form', 'front-editor'),
-                'add_new_item'       => __('Add Post Form', 'front-editor'),
-                'edit_item'          => __('Edit Post Form', 'front-editor'),
-                'new_item'           => __('New Post Form', 'front-editor'),
-                'view_item'          => __('Watch Post Form', 'front-editor'),
-                'search_items'       => __('Search Post Form', 'front-editor'),
-                'not_found'          => __('Not Found', 'front-editor'),
-                'not_found_in_trash' => __('Not found in trash', 'front-editor'),
+                'name'               => __('Post Form', FE_TEXT_DOMAIN),
+                'singular_name'      => __('Post Form', FE_TEXT_DOMAIN),
+                'add_new'            => __('Add Post Form', FE_TEXT_DOMAIN),
+                'add_new_item'       => __('Add Post Form', FE_TEXT_DOMAIN),
+                'edit_item'          => __('Edit Post Form', FE_TEXT_DOMAIN),
+                'new_item'           => __('New Post Form', FE_TEXT_DOMAIN),
+                'view_item'          => __('Watch Post Form', FE_TEXT_DOMAIN),
+                'search_items'       => __('Search Post Form', FE_TEXT_DOMAIN),
+                'not_found'          => __('Not Found', FE_TEXT_DOMAIN),
+                'not_found_in_trash' => __('Not found in trash', FE_TEXT_DOMAIN),
                 'parent_item_colon'  => '',
-                'menu_name'          => __('Post Forms', 'front-editor'),
+                'menu_name'          => __('Post Forms', FE_TEXT_DOMAIN),
             ],
             'description'         => '',
             'public'              => false,

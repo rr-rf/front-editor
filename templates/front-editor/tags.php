@@ -1,6 +1,6 @@
 <div class="select-wrap">
-    <label for="tags-select"><?php echo esc_attr(__('Select tags', 'front-editor')); ?></label>
-    <select id="bfe-tags" name="tags-select" data-placeholder="<?php echo esc_attr(__('Select tags', 'front-editor')); ?>"  multiple>
+    <label for="tags-select"><?php echo esc_attr(__('Select tags', FE_TEXT_DOMAIN)); ?></label>
+    <select id="bfe-tags" name="tags-select" data-placeholder="<?php echo esc_attr(__('Select tags', FE_TEXT_DOMAIN)); ?>"  multiple>
         <?php
         $post_cat_id = 0;
         $tags_array = [];

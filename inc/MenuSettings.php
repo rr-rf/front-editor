@@ -19,13 +19,13 @@ class MenuSettings
 	 */
 	public static function init()
 	{
-		self::$only_if_pro_text = __('Buy pro version to use this functionality', 'front-editor');
+		self::$only_if_pro_text = __('Buy pro version to use this functionality', FE_TEXT_DOMAIN);
 		self::$is_pro_version = get_option('bfe_is_front_editor_pro_version_exist');
 
 		self::$default_select = [
-			'display' => __('Display', 'front-editor'),
-			'require' => __('Display and require', 'front-editor'),
-			'disable' => __('Disable this field', 'front-editor')
+			'display' => __('Display', FE_TEXT_DOMAIN),
+			'require' => __('Display and require', FE_TEXT_DOMAIN),
+			'disable' => __('Disable this field', FE_TEXT_DOMAIN)
 		];
 
 		add_action(
@@ -37,8 +37,8 @@ class MenuSettings
 
 
 					$menu = add_menu_page(
-						$page_title = __('Front Editor & publisher', 'front-editor'),
-						$menu_title = __('Front Editor', 'front-editor'),
+						$page_title = __('Front Editor & publisher', FE_TEXT_DOMAIN),
+						$menu_title = __('Front Editor', FE_TEXT_DOMAIN),
 						$capability,
 						$menu_slug = 'front_editor_settings',
 						$function = [__CLASS__, 'display_page'],
@@ -48,17 +48,14 @@ class MenuSettings
 
 					$submenu = add_submenu_page(
 						'front_editor_settings',
-						__('Settings', 'front-editor'),
-						__('Settings', 'front-editor'),
+						__('Settings', FE_TEXT_DOMAIN),
+						__('Settings', FE_TEXT_DOMAIN),
 						$capability,
 						'fe-global-settings',
 						[__CLASS__, 'display_page']
 					);
 
-					$post_forms = add_submenu_page(null, __('Post Forms', 'front-editor'), __('Post Forms', 'front-editor'), $capability, 'fe-post-forms', ['\BFE\PostFormCPT', 'fe_post_forms_page']);
-
-					add_action('admin_print_scripts-' . $menu, 'bfe-block-script');
-					add_action('admin_print_scripts-' . $submenu, 'bfe-block-script');
+					$post_forms = add_submenu_page(null, __('Post Forms', FE_TEXT_DOMAIN), __('Post Forms', FE_TEXT_DOMAIN), $capability, 'fe-post-forms', ['\BFE\PostFormCPT', 'fe_post_forms_page']);
 				}
 			}
 		);
@@ -114,10 +111,10 @@ class MenuSettings
 		$id = $post->ID;
 		$class = 'notice notice-error';
 		$message = sprintf(
-			__('This post created with the Front Editor plugin. Please edit it using Front Editor to not have issues with the plugin!', 'front-editor')
+			__('This post created with the Front Editor plugin. Please edit it using Front Editor to not have issues with the plugin!', FE_TEXT_DOMAIN)
 		);
 
-		printf('<div class="%s"><p>%s</p><a href="%s">%s</a></div>', esc_attr($class), $message, Editor::get_post_edit_link($id), __('Edit in front editor', 'front-editor'));
+		printf('<div class="%s"><p>%s</p><a href="%s">%s</a></div>', esc_attr($class), $message, Editor::get_post_edit_link($id), __('Edit in front editor', FE_TEXT_DOMAIN));
 	}
 
 	/**
@@ -127,7 +124,7 @@ class MenuSettings
 	 */
 	public static function settings_general()
 	{
-		add_settings_section('bfe_front_editor_general_settings_section', __('Global settings', 'front-editor'), null, 'front_editor_settings');
+		add_settings_section('bfe_front_editor_general_settings_section', __('Global settings', FE_TEXT_DOMAIN), null, 'front_editor_settings');
 
 		/**
 		 * Edit button position in single post
@@ -136,7 +133,7 @@ class MenuSettings
 		register_setting('front_editor_settings', $cs_option_name);
 		add_settings_field(
 			$id = $cs_option_name,
-			$title = __('Edit button position in single post', 'front-editor'),
+			$title = __('Edit button position in single post', FE_TEXT_DOMAIN),
 			$callback = [__CLASS__, 'edit_button_position'],
 			$page = 'front_editor_settings',
 			$section = 'bfe_front_editor_general_settings_section',
@@ -153,7 +150,7 @@ class MenuSettings
 		register_setting('front_editor_settings', $cs_option_name);
 		add_settings_field(
 			$id = $cs_option_name,
-			$title = __('WordPress admin bar', 'front-editor'),
+			$title = __('WordPress admin bar', FE_TEXT_DOMAIN),
 			$callback = [__CLASS__, 'wp_admin_menu'],
 			$page = 'front_editor_settings',
 			$section = 'bfe_front_editor_general_settings_section',
@@ -177,7 +174,7 @@ class MenuSettings
 			$message = sprintf(
 				__('We cant fined the page with <strong>Front Editor</strong>, 
 			 		please add the page with Gutenberg block named <strong>%s</strong>
-			 		or add Shortcode <strong>%s</strong>', 'front-editor'),
+			 		or add Shortcode <strong>%s</strong>', FE_TEXT_DOMAIN),
 				$guthenber_block = 'Editor Block',
 				$shortcode = '[bfe-front-editor]'
 			);
@@ -193,14 +190,14 @@ class MenuSettings
 	 */
 	public static function short_information_and_instruction()
 	{
-		printf('<h2>%s</h2>', __('Short information', 'front-editor'));
+		printf('<h2>%s</h2>', __('Short information', FE_TEXT_DOMAIN));
 
 		$class = 'notice notice-warning is-dismissible';
 		$message = sprintf(
 			__(
 				'If you have some ideas or questions please contact me. 
 				The contact information you can find on our website %s',
-				'front-editor'
+				FE_TEXT_DOMAIN
 			),
 			'<strong><a href="https://wpfronteditor.com" target="_blank">wpfronteditor.com</a></strong>'
 		);
@@ -210,7 +207,7 @@ class MenuSettings
 		$site_link = 'https://wpfronteditor.com/';
 		printf(
 			'<p>%s</p>',
-			sprintf(__('You can buy pro version or find additional information <a href="%s" target="_blank">here</a> or add some ideas or issues in %s', 'front-editor'), $site_link, $github_link)
+			sprintf(__('You can buy pro version or find additional information <a href="%s" target="_blank">here</a> or add some ideas or issues in %s', FE_TEXT_DOMAIN), $site_link, $github_link)
 		);
 	}
 
@@ -220,7 +217,7 @@ class MenuSettings
 	 */
 	public static function display_page()
 	{
-		echo sprintf('<h1>%s</h1>', __('Settings Page', 'front-editor'));
+		echo sprintf('<h1>%s</h1>', __('Settings Page', FE_TEXT_DOMAIN));
 		do_action('bfe_front_editor_settings_before_form');
 		echo '<form method="POST" action="options.php">';
 		settings_fields('front_editor_settings');
@@ -243,10 +240,10 @@ class MenuSettings
 		echo sprintf('<select name="%s">', $id);
 
 		$options = [
-			'left_bottom' => __('Left bottom', 'front-editor'),
-			'left_top' => __('Left top', 'front-editor'),
-			'right_bottom' => __('Right bottom', 'front-editor'),
-			'right_top' => __('Right top', 'front-editor'),
+			'left_bottom' => __('Left bottom', FE_TEXT_DOMAIN),
+			'left_top' => __('Left top', FE_TEXT_DOMAIN),
+			'right_bottom' => __('Right bottom', FE_TEXT_DOMAIN),
+			'right_top' => __('Right top', FE_TEXT_DOMAIN),
 		];
 
 		foreach ($options as $val => $option) {
@@ -268,9 +265,9 @@ class MenuSettings
 		echo sprintf('<select name="%s">', $id);
 
 		$options = [
-			'display' => __('Display', 'front-editor'),
-			'disable' => __('Disable for all', 'front-editor'),
-			'disable_but_admin' => __('Disable for all but admin', 'front-editor'),
+			'display' => __('Display', FE_TEXT_DOMAIN),
+			'disable' => __('Disable for all', FE_TEXT_DOMAIN),
+			'disable_but_admin' => __('Disable for all but admin', FE_TEXT_DOMAIN),
 		];
 
 		foreach ($options as $val => $option) {

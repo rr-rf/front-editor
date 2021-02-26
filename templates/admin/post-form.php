@@ -4,24 +4,31 @@
     ?>
     <div class="settings-header">
         <div>
-            <p><?= __('Form Title', 'front-editor') ?></p>
-            <input type="text" name="fe_title" value="<?php echo $post_ID !== 'new' ? get_the_title($post_ID) : __('Sample Form', 'front-editor') ?>" placeholder="<?= __('Sample Form', 'front-editor') ?>">
+            <p><?= __('Form Title', FE_TEXT_DOMAIN) ?></p>
+            <input type="text" name="fe_title" value="<?php echo $post_ID !== 'new' ? get_the_title($post_ID) : __('Sample Form', FE_TEXT_DOMAIN) ?>" placeholder="<?= __('Sample Form', FE_TEXT_DOMAIN) ?>">
+        </div>
+        <div>
+            <p><?= __('Shortcode', FE_TEXT_DOMAIN) ?></p>
+            <?php
+                $shortcode = '[fe_form id="%s"]';
+            ?>
+            <code><?php echo $post_ID !== 'new' ? sprintf($shortcode,$post_ID) : '' ?></code>
         </div>
 
         <input type="text" id="post_id" name="post_id" value="<?php echo $post_ID ?>" class="hidden">
-        <button id="save-form-post" class="right_top"><?= __('Save', 'front-editor') ?></button>
+        <button id="save-form-post" class="right_top"><?= __('Save', FE_TEXT_DOMAIN) ?></button>
     </div>
     <div class="settings-header">
         <h2 class="nav-tab-wrapper">
-            <a href="#post-form-builder" class="nav-tab nav-tab-active"><?= __('Form Editor', 'front-editor') ?></a>
-            <a href="#post-form-settings" class="nav-tab "><?= __('Settings', 'front-editor') ?></a>
+            <a href="#post-form-builder" class="nav-tab nav-tab-active"><?= __('Form Editor', FE_TEXT_DOMAIN) ?></a>
+            <a href="#post-form-settings" class="nav-tab "><?= __('Settings', FE_TEXT_DOMAIN) ?></a>
         </h2>
     </div>
 
     <div class="tab-contents">
         <div id="post-form-builder" class="group active">
-            <h3><?= __('Options', 'front-editor') ?></h3>
-            <span><?= __('Select post type', 'front-editor') ?></span>
+            <h3><?= __('Options', FE_TEXT_DOMAIN) ?></h3>
+            <span><?= __('Select post type', FE_TEXT_DOMAIN) ?></span>
             <select name="post_type" id="fe_settings_post_type">
                 <?php
 
