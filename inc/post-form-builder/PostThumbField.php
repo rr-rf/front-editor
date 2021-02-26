@@ -11,10 +11,10 @@ namespace BFE\Field;
 defined('ABSPATH') || exit;
 
 
-class PostTitleField
+class PostThumbField
 {
-    public static $field_label = 'Post Title';
-    public static $field_type =  'post_title';
+    public static $field_label = 'Featured Image';
+    public static $field_type =  'featured_image';
 
     public static function init()
     {
@@ -33,7 +33,7 @@ class PostTitleField
                 'attrs' => [
                     'type' => self::$field_type
                 ],
-                'icon' => '🅰️',
+                'icon' => '<span class="dashicons dashicons-format-image"></span>',
             ];
 
         $data['formBuilder_options']['temp_back'][self::$field_type] = [
@@ -49,6 +49,18 @@ class PostTitleField
             'label' => $field_label,
             'type' => self::$field_type
         ];
+
+        /**
+         * Adding attribute settings 
+         */
+        $data['formBuilder_options']['typeUserAttrs'][self::$field_type] =
+            [
+                'wp_media_uploader' => [
+                    'label' => __('WP Media Uploader', FE_TEXT_DOMAIN),
+                    'value' => true,
+                    'type' => 'checkbox',
+                ]
+            ];
 
         /**
          * Adding field to group
@@ -75,4 +87,4 @@ class PostTitleField
     }
 }
 
-PostTitleField::init();
+PostThumbField::init();

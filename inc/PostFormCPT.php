@@ -23,6 +23,8 @@ class PostFormCPT
         require_once __DIR__ . '/post-form-builder/PostTitleField.php';
         require_once __DIR__ . '/post-form-builder/EditorJsField.php';
         require_once __DIR__ . '/post-form-builder/TaxonomiesFields.php';
+        require_once __DIR__ . '/post-form-builder/PostThumbField.php';
+
         /**
          * Registering custom post type
          */

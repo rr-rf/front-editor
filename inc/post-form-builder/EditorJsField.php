@@ -144,8 +144,6 @@ class EditorJsField
         $data['formBuilder_options']['disable_attr'][] = '.fld-editor_warning_plugin';
         $data['formBuilder_options']['disable_attr'][] = '.fld-editor_gallery_plugin';
         $data['formBuilder_options']['disable_attr'][] = '.fld-editor_table_plugin';
-
-
         $data['formBuilder_options']['disable_attr'][] = '.fld-editor_warning_plugin';
 
         /**
@@ -155,7 +153,6 @@ class EditorJsField
             [
                 'name',
                 'description',
-                'required',
                 'inline',
                 'toggle',
                 'placeholder',
@@ -163,12 +160,17 @@ class EditorJsField
                 'value',
             ];
 
-
-
-
         return $data;
     }
 
+    /**
+     * Field setting for front end 
+     *
+     * @param [type] $data
+     * @param [type] $attributes
+     * @param [type] $post_id
+     * @return void
+     */
     public static function field_setting_for_frontend($data, $attributes, $post_id)
     {
         $data['editor_settings'] = [

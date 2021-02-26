@@ -101,7 +101,6 @@ class TaxonomiesFields
                 [
                     'name',
                     'description',
-                    'required',
                     'inline',
                     'toggle',
                     'placeholder',

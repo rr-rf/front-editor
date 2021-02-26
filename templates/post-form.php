@@ -1,13 +1,14 @@
 <?php
 var_dump(get_post_meta($attributes['id'], 'formBuilderData', true));
 $fields_list = json_decode(get_post_meta($attributes['id'], 'formBuilderData', true), true);
-$form_id = $attributes['id']??0;
+$form_id = $attributes['id'] ?? 0;
 ?>
-<form class="bfe-editor" id="bfe-editor" post_id="<?= $post_id ?>" form_id="<?= $form_id ?>">
+<form class="bfe-editor" id="bfe-editor">
     <div class="hidden-fields">
         <?php if ($form_id) : ?>
             <input type="text" name="form_id" value="<?= $form_id ?>">
-            <input type="text" name="form_id" value="<?= $form_id ?>">
+            <input type="text" name="post_id" value="<?= $post_id ?>">
+            <input type="text" name="fe_post_type" value="<?= get_post_meta('fe_post_type', $form_id, true) ?>">
         <?php endif; ?>
     </div>
 
