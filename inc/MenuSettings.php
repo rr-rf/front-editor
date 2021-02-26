@@ -34,11 +34,9 @@ class MenuSettings
 				if (current_user_can('manage_options')) {
 					$capability = 'manage_options';
 
-
-
 					$menu = add_menu_page(
-						$page_title = __('Front Editor & publisher', FE_TEXT_DOMAIN),
-						$menu_title = __('Front Editor', FE_TEXT_DOMAIN),
+						$page_title = __('Front User Submit | Front Editor', FE_TEXT_DOMAIN),
+						$menu_title = __('Front User Submit', FE_TEXT_DOMAIN),
 						$capability,
 						$menu_slug = 'front_editor_settings',
 						$function = [__CLASS__, 'display_page'],
