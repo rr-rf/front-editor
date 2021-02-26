@@ -21,10 +21,7 @@ class Block
         add_action('init', [__CLASS__, 'gutenberg_add_editor_block']);
         add_action('enqueue_block_editor_assets', [__CLASS__, 'gutenberg_editor_block_editor_scripts']);
         
-        // image selection addon
-        add_action('bfe_editor_sub_header_parts_form', [__CLASS__, 'add_post_image_selection'], 12);
-        add_filter('bfe_ajax_before_front_editor_post_update_or_creation', [__CLASS__, 'image_on_save_check'], 10, 3);
-        // category selection addon
+         // category selection addon
         add_action('bfe_editor_sub_header_parts_form', [__CLASS__, 'category_select'], 13, 2);
         add_filter('bfe_ajax_before_front_editor_post_update_or_creation', [__CLASS__, 'add_category_on_save_and_check'], 10, 3);
 

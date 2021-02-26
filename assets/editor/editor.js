@@ -3977,17 +3977,16 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
         formBuilderContainer = $("#".concat(formBuilderId)).formBuilder(_objectSpread(_objectSpread({}, options), formBuilderOptions));
         formBuilderContainer.promise.then(function (formBuilder) {
-          console.log(formBuilderOptions); // Remove controls on ajax request if there do not needed
-
+          // Remove controls on ajax request if there do not needed
           builder_control_controls(formBuilderOptions); // Add groups
 
-          add_groups(); // Disable pro fields
+          add_groups(); // Adding data 
+
+          formBuilderContainer.actions.setData(response.formBuilderData); // Disable pro fields
 
           formBuilderOptions.disable_attr.map(function (val) {
             $(document).find(val).prop('disabled', true);
-          }); // Adding data 
-
-          formBuilderContainer.actions.setData(response.formBuilderData);
+          });
         });
       },
       error: function error(_error) {

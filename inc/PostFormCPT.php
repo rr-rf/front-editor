@@ -109,8 +109,9 @@ class PostFormCPT
                         'types' => []
                     ],
                 ],
+                'disabledFieldButtons' => [],
                 'controlOrder' => [],
-                'disabledActionButtons' => ['data','clear','save'],
+                'disabledActionButtons' => ['data', 'clear', 'save'],
                 'messages' => [
                     'max_fields_warning' => __('You already have this field in the form', FE_TEXT_DOMAIN)
                 ]
@@ -119,7 +120,7 @@ class PostFormCPT
 
 
         if ($post_ID) {
-            $data['formBuilderData'] = get_post_meta($post_ID, 'formBuilderData',true);
+            $data['formBuilderData'] = get_post_meta($post_ID, 'formBuilderData', true);
         }
 
         /**
@@ -219,7 +220,7 @@ class PostFormCPT
             $post_ID = intval(sanitize_text_field($_POST['post_id']));
             wp_update_post([
                 'ID'           => $post_ID,
-                'post_title'   => $title, 
+                'post_title'   => $title,
             ]);
         } elseif (!empty($_POST['post_id']) && $_POST['post_id'] === 'new') {
             $post_ID = wp_insert_post([

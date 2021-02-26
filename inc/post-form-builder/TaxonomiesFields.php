@@ -94,7 +94,13 @@ class TaxonomiesFields
                         'type' => 'checkbox',
                     ],
                 ];
+
             /**
+             * Disable button
+             */
+            $data['formBuilder_options']['disabledFieldButtons'][$tax_type] = ['copy'];
+            /**
+             * 
              * Disabling default settings
              */
             $data['formBuilder_options']['typeUserDisabledAttrs'][$tax_type] =
@@ -116,7 +122,7 @@ class TaxonomiesFields
     public static function front_tax_select($post_id, $attributes, $field)
     {
 
-        if (strpos($field['type'], 'tax') === false ) {
+        if (strpos($field['type'], 'tax') === false) {
             return;
         }
 

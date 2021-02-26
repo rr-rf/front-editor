@@ -160,6 +160,8 @@ class EditorJsField
                 'value',
             ];
 
+            $data['formBuilder_options']['disabledFieldButtons'][self::$field_type] = ['copy'];
+
         return $data;
     }
 

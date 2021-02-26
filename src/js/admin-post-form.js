@@ -95,21 +95,19 @@ export default ($, Swal) => {
                     { ...options, ...formBuilderOptions }
                 );
                 formBuilderContainer.promise.then(formBuilder => {
-                    console.log(formBuilderOptions)
                     // Remove controls on ajax request if there do not needed
                     builder_control_controls(formBuilderOptions);
 
                     // Add groups
                     add_groups()
 
+                    // Adding data 
+                    formBuilderContainer.actions.setData(response.formBuilderData);
+
                     // Disable pro fields
                     formBuilderOptions.disable_attr.map((val) => {
                         $(document).find(val).prop('disabled', true)
                     });
-
-                    // Adding data 
-                    formBuilderContainer.actions.setData(response.formBuilderData);
-
                 });
             },
             error: function (error) {

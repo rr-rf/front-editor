@@ -19,6 +19,15 @@ class PostThumbField
     public static function init()
     {
         add_filter('admin_post_form_formBuilder_settings', [__CLASS__, 'add_field_settings']);
+
+        // category selection addon
+        add_action('bfe_editor_on_front_field_adding', [__CLASS__, 'add_post_image_selection'], 10, 3);
+        add_filter('bfe_ajax_before_front_editor_post_update_or_creation', [__CLASS__, 'image_on_save_check'], 10, 3);
+
+        /**
+         * Activating pro fields components activation
+         */
+        //add_filter('bfe_front_editor_localize_data', [__CLASS__, 'adding_pro_version_settings'], 11, 2);
     }
 
     public static function add_field_settings($data)
@@ -56,19 +65,21 @@ class PostThumbField
         $data['formBuilder_options']['typeUserAttrs'][self::$field_type] =
             [
                 'wp_media_uploader' => [
-                    'label' => __('WP Media Uploader', FE_TEXT_DOMAIN),
-                    'value' => true,
+                    'label' => __('WP Media Uploader (PRO)', FE_TEXT_DOMAIN),
+                    'value' => false,
                     'type' => 'checkbox',
                 ]
             ];
 
         /**
+         * Disable attr if there is no pro version
+         */
+        $data['formBuilder_options']['disable_attr'][] = '.fld-wp_media_uploader';
+
+        /**
          * Adding field to group
          */
         $data['formBuilder_options']['controls_group']['post_fields']['types'][] = self::$field_type;
-
-
-        $data['formBuilder_options']['disable_attr'][] = '.fld-editor_warning_plugin';
 
         /**
          * Disabling default settings
@@ -84,6 +95,51 @@ class PostThumbField
             ];
 
         return $data;
+    }
+
+    /**
+     * Add post image selection
+     *
+     * @return void
+     */
+    public static function add_post_image_selection($post_id, $attributes, $field)
+    {
+
+        if ($field['type'] !== self::$field_type) {
+            return;
+        }
+
+        require FE_Template_PATH . 'front-editor/post-featured-image.php';
+    }
+
+    /**
+     * Image check
+     *
+     * @param [type] $post_data
+     * @param [type] $data
+     * @param [type] $file
+     * @return void
+     */
+    public static function image_on_save_check($post_data, $data, $file)
+    {
+
+        $settings = get_post_meta($_POST['editor_post_id'], 'save_editor_attributes_to_meta', 1);
+        $post_image = sanitize_text_field($settings['post_image']);
+        $is_featured_image_exist = $_POST['thumb_exist'] ?? 0;
+
+        if ($post_image === 'disable') {
+            return $post_data;
+        }
+
+        if ($is_featured_image_exist) {
+            return $post_data;
+        }
+
+        if ($post_image === 'require' && empty($_FILES['image']) && empty($_POST['thumb_img_id'])) {
+            wp_send_json_error(['message' => __('The featured image is required', FE_TEXT_DOMAIN)]);
+        }
+
+        return $post_data;
     }
 }
 
