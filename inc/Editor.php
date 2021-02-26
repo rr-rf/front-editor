@@ -111,7 +111,6 @@ class Editor
 			$editor_data = self::example_editor_data();
 		}
 
-
 		$data = [
 			'ajax_url'          => admin_url('admin-ajax.php'),
 			'nonce'             => wp_create_nonce('bfe_nonce'),
@@ -124,90 +123,8 @@ class Editor
 					'updating' => sprintf('%s...', __('Updating', FE_TEXT_DOMAIN)),
 					'update'   => __('Update', FE_TEXT_DOMAIN),
 				],
-				'i18n' => [
-					'messages' => [
-						'ui' => [
-							"blockTunes" => [
-								"toggler" => [
-									"Click to tune" => __("Click to tune", FE_TEXT_DOMAIN),
-									"or drag to move" => __("or drag to move", FE_TEXT_DOMAIN)
-								]
-							],
-							'inlineToolbar' => [
-								'converter' => [
-									"Convert to" => __("Convert to", FE_TEXT_DOMAIN)
-
-								]
-							],
-							"toolbar" => [
-								"toolbox" => [
-									"Add" => __("Add", FE_TEXT_DOMAIN)
-								]
-							]
-						],
-						'toolNames' => [
-							"Text" => __("Text", FE_TEXT_DOMAIN),
-							"Heading" => __("Heading", FE_TEXT_DOMAIN),
-							"List" => __("List", FE_TEXT_DOMAIN),
-							"Warning" => __("Warning", FE_TEXT_DOMAIN),
-							"Checklist" => __("Checklist", FE_TEXT_DOMAIN),
-							"Quote" => __("Quote", FE_TEXT_DOMAIN),
-							"Code" => __("Code", FE_TEXT_DOMAIN),
-							"Delimiter" => __("Delimiter", FE_TEXT_DOMAIN),
-							"Raw HTML" => __("Raw HTML", FE_TEXT_DOMAIN),
-							"Table" => __("Table", FE_TEXT_DOMAIN),
-							"Link" => __("Link", FE_TEXT_DOMAIN),
-							"Marker" => __("Marker", FE_TEXT_DOMAIN),
-							"Bold" => __("Bold", FE_TEXT_DOMAIN),
-							"Italic" => __("Italic", FE_TEXT_DOMAIN),
-							"InlineCode" => __("InlineCode", FE_TEXT_DOMAIN),
-							"Image & Gallery" => __("Image & Gallery", FE_TEXT_DOMAIN),
-							"Image" => __("Image", FE_TEXT_DOMAIN)
-						],
-						'tools' => [
-							'warning' => [
-								"Title" => __("Title", FE_TEXT_DOMAIN),
-								"Message" => __("Message", FE_TEXT_DOMAIN)
-							],
-							'link' => [
-								"Add a link" => __("Add a link", FE_TEXT_DOMAIN),
-							],
-							'stub' => [
-								"The block can not be displayed correctly." => __("The block can not be displayed correctly.", FE_TEXT_DOMAIN),
-							]
-						],
-						'blockTunes' => [
-							'delete' => [
-								"Delete" => __("Delete", FE_TEXT_DOMAIN),
-							],
-							'moveUp' => [
-								"Move up" => __("Move up", FE_TEXT_DOMAIN),
-							],
-							'moveDown' => [
-								"Move down" => __("Move down", FE_TEXT_DOMAIN),
-							]
-						]
-					]
-				]
+				
 			],
-			'editor_settings' => [
-				'editor_image_plugin' => $attributes['editor_image_plugin'] ?? true,
-				'editor_header_plugin' => $attributes['editor_header_plugin'] ?? true,
-				'editor_embed_plugin' => $attributes['editor_embed_plugin'] ?? true,
-				'editor_list_plugin' => $attributes['editor_list_plugin'] ?? true,
-				'editor_checklist_plugin' => $attributes['editor_checklist_plugin'] ?? true,
-				'editor_quote_plugin' => $attributes['editor_quote_plugin'] ?? true,
-				'editor_marker_plugin' => $attributes['editor_marker_plugin'] ?? true,
-				'editor_code_plugin' => $attributes['editor_code_plugin'] ?? true,
-				'editor_delimiter_plugin' => $attributes['editor_delimiter_plugin'] ?? true,
-				'editor_inlineCode_plugin' => $attributes['editor_inlineCode_plugin'] ?? true,
-				'editor_linkTool_plugin' => $attributes['editor_linkTool_plugin'] ?? true,
-				'tags_add_new' => $attributes['tags_add_new'] ?? false,
-				'wp_media_uploader' => false, // pro
-				'editor_warning_plugin' => false, // pro
-				'editor_table_plugin' => false, // pro
-				'editor_gallery_plugin' => false, // pro
-			]
 		];
 
 		$wp_localize_data = apply_filters('bfe_front_editor_localize_data', $data, $attributes);

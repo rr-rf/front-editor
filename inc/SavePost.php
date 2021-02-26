@@ -38,12 +38,14 @@ class SavePost
 		 * When saving from Gutenberg
 		 */
 		add_action('save_post', [__CLASS__, 'gutenberg_save_post'], 10, 3);
+		// post status
+		add_filter('bfe_ajax_before_front_editor_post_update_or_creation', [__CLASS__, 'add_post_status_check'], 10, 3);
 
 		/**
-         * Updating attachment parent
-         */
-		add_action('fe_before_gallery_block_images_html_render',[__CLASS__, 'update_attachment_parent'], 13, 2);
-		add_action('fe_before_simple_image_block_images_html_render',[__CLASS__, 'update_attachment_parent'], 13, 2);
+		 * Updating attachment parent
+		 */
+		add_action('fe_before_gallery_block_images_html_render', [__CLASS__, 'update_attachment_parent'], 13, 2);
+		add_action('fe_before_simple_image_block_images_html_render', [__CLASS__, 'update_attachment_parent'], 13, 2);
 	}
 
 	/**
@@ -175,6 +177,29 @@ class SavePost
 			)
 		);
 	}
+
+	/**
+	 * adding status
+	 *
+	 * @param [type] $post_data
+	 * @param [type] $data
+	 * @param [type] $file
+	 * @return void
+	 */
+	public static function add_post_status_check($post_data, $data, $file)
+	{
+		$settings = get_post_meta($_POST['editor_post_id'], 'save_editor_attributes_to_meta', 1);
+		$post_status = sanitize_text_field($settings['editor_post_status']);
+
+		if (empty($post_status)) {
+			return $post_data;
+		}
+
+		$post_data['post_status'] = $post_status;
+
+		return $post_data;
+	}
+
 
 	/**
 	 * Adding post thumbnail or delete

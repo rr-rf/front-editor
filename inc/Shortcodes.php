@@ -10,6 +10,8 @@ class Shortcodes
         add_shortcode('bfe-front-editor', [__CLASS__, 'editor_js']);
 
         add_shortcode('user_posts_list', [__CLASS__, 'user_posts_list']);
+
+        add_shortcode('fe_form', [__CLASS__, 'editor_js']);
     }
 
     /**
@@ -40,6 +42,27 @@ class Shortcodes
 
         return Editor::show_front_editor($atts);
     }
+
+    /**
+     * fe form
+     *
+     * @param [type] $atts
+     * @return void
+     */
+    public static function fe_form($atts)
+    {
+
+        /**
+         * If exist true and false string it is changing it to the boolean
+         */
+        if (empty($atts['id'])) {
+            return '';
+        }
+
+        return Editor::show_front_editor($atts);
+    }
+
+
 
     /**
      * creating shortcode 

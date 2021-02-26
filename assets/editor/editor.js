@@ -3952,7 +3952,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
         admin_form_builder_nonce: admin_form_builder_nonce
       },
       success: function success(response) {
-        console.log(response);
         var formBuilderId = "form-builder";
         $("#".concat(formBuilderId)).remove();
         $('.formBuilder-wrapper').empty().append("<div id=\"".concat(formBuilderId, "\"></div>"));
@@ -3978,7 +3977,8 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
         formBuilderContainer = $("#".concat(formBuilderId)).formBuilder(_objectSpread(_objectSpread({}, options), formBuilderOptions));
         formBuilderContainer.promise.then(function (formBuilder) {
-          // Remove controls on ajax request if there do not needed
+          console.log(formBuilderOptions); // Remove controls on ajax request if there do not needed
+
           builder_control_controls(formBuilderOptions); // Add groups
 
           add_groups(); // Disable pro fields
@@ -4150,7 +4150,7 @@ __webpack_require__.r(__webpack_exports__);
   }
 
   blocks.registerBlockType('bfe/bfe-block', {
-    title: __('Front Editor', FE_TEXT_DOMAIN),
+    title: __('Front Editor', 'front-editor'),
     icon: 'edit',
     category: 'common',
     multiple: false,

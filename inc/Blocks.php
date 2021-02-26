@@ -20,8 +20,7 @@ class Block
     {
         add_action('init', [__CLASS__, 'gutenberg_add_editor_block']);
         add_action('enqueue_block_editor_assets', [__CLASS__, 'gutenberg_editor_block_editor_scripts']);
-        // post status
-        add_filter('bfe_ajax_before_front_editor_post_update_or_creation', [__CLASS__, 'add_post_status_check'], 10, 3);
+        
         // image selection addon
         add_action('bfe_editor_sub_header_parts_form', [__CLASS__, 'add_post_image_selection'], 12);
         add_filter('bfe_ajax_before_front_editor_post_update_or_creation', [__CLASS__, 'image_on_save_check'], 10, 3);
@@ -143,28 +142,7 @@ class Block
         ]);
     }
 
-    /**
-     * adding status
-     *
-     * @param [type] $post_data
-     * @param [type] $data
-     * @param [type] $file
-     * @return void
-     */
-    public static function add_post_status_check($post_data, $data, $file)
-    {
-        $settings = get_post_meta($_POST['editor_post_id'], 'save_editor_attributes_to_meta', 1);
-        $post_status = sanitize_text_field($settings['editor_post_status']);
-
-        if (empty($post_status)) {
-            return $post_data;
-        }
-
-        $post_data['post_status'] = $post_status;
-
-        return $post_data;
-    }
-
+    
     /**
      * Add post image selection
      *

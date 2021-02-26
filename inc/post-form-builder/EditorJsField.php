@@ -15,12 +15,19 @@ class EditorJsField
 {
     public static $field_label = 'Post Content (EditorJS - block styled editor)';
     public static $field_type =  'post_content_editor_js';
-    
+
     public static function init()
     {
+        /**
+         * Adding setting to admin
+         */
         add_filter('admin_post_form_formBuilder_settings', [__CLASS__, 'add_field_settings']);
-    }
 
+        add_filter('bfe_front_editor_localize_data', [__CLASS__, 'field_setting_for_frontend'], 10, 2);
+    }
+    /**
+     * Adding setting to admin
+     */
     public static function add_field_settings($data)
     {
         /**
@@ -35,11 +42,11 @@ class EditorJsField
                 'icon' => '<svg width="84" height="84" viewBox="0 0 84 84" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="editorjs-logo-a"><stop stop-color="#39FFD7" offset="0%"></stop><stop stop-color="#308EFF" offset="100%"></stop></linearGradient></defs><g fill-rule="nonzero" fill="none"><circle fill="url(#editorjs-logo-a)" cx="42" cy="42" r="42"></circle><rect fill="#FFF" x="38" y="17" width="8" height="50" rx="4"></rect><rect fill="#FFF" x="17" y="38" width="50" height="8" rx="4"></rect></g></svg>',
             ];
 
-            $data['formBuilder_options']['temp_back'][self::$field_type] = [
-                'field' => sprintf('<div class="%s editor" name="%s"></div>', self::$field_type,self::$field_type),
-                'onRender' => '',
-                'max_in_form' => 1
-            ];
+        $data['formBuilder_options']['temp_back'][self::$field_type] = [
+            'field' => sprintf('<div class="%s editor" name="%s"></div>', self::$field_type, self::$field_type),
+            'onRender' => '',
+            'max_in_form' => 1
+        ];
 
         /**
          * Adding attribute settings 
@@ -157,7 +164,97 @@ class EditorJsField
             ];
 
 
-        
+
+
+        return $data;
+    }
+
+    public static function field_setting_for_frontend($data, $attributes)
+    {
+        $data['editor_settings'] = [
+            'editor_image_plugin' => $attributes['editor_image_plugin'] ?? true,
+            'editor_header_plugin' => $attributes['editor_header_plugin'] ?? true,
+            'editor_embed_plugin' => $attributes['editor_embed_plugin'] ?? true,
+            'editor_list_plugin' => $attributes['editor_list_plugin'] ?? true,
+            'editor_checklist_plugin' => $attributes['editor_checklist_plugin'] ?? true,
+            'editor_quote_plugin' => $attributes['editor_quote_plugin'] ?? true,
+            'editor_marker_plugin' => $attributes['editor_marker_plugin'] ?? true,
+            'editor_code_plugin' => $attributes['editor_code_plugin'] ?? true,
+            'editor_delimiter_plugin' => $attributes['editor_delimiter_plugin'] ?? true,
+            'editor_inlineCode_plugin' => $attributes['editor_inlineCode_plugin'] ?? true,
+            'editor_linkTool_plugin' => $attributes['editor_linkTool_plugin'] ?? true,
+            'tags_add_new' => $attributes['tags_add_new'] ?? false,
+            'wp_media_uploader' => false, // pro
+            'editor_warning_plugin' => false, // pro
+            'editor_table_plugin' => false, // pro
+            'editor_gallery_plugin' => false, // pro
+        ];
+
+        $data['translations']['i18n'] = [
+            'messages' => [
+                'ui' => [
+                    "blockTunes" => [
+                        "toggler" => [
+                            "Click to tune" => __("Click to tune", FE_TEXT_DOMAIN),
+                            "or drag to move" => __("or drag to move", FE_TEXT_DOMAIN)
+                        ]
+                    ],
+                    'inlineToolbar' => [
+                        'converter' => [
+                            "Convert to" => __("Convert to", FE_TEXT_DOMAIN)
+
+                        ]
+                    ],
+                    "toolbar" => [
+                        "toolbox" => [
+                            "Add" => __("Add", FE_TEXT_DOMAIN)
+                        ]
+                    ]
+                ],
+                'toolNames' => [
+                    "Text" => __("Text", FE_TEXT_DOMAIN),
+                    "Heading" => __("Heading", FE_TEXT_DOMAIN),
+                    "List" => __("List", FE_TEXT_DOMAIN),
+                    "Warning" => __("Warning", FE_TEXT_DOMAIN),
+                    "Checklist" => __("Checklist", FE_TEXT_DOMAIN),
+                    "Quote" => __("Quote", FE_TEXT_DOMAIN),
+                    "Code" => __("Code", FE_TEXT_DOMAIN),
+                    "Delimiter" => __("Delimiter", FE_TEXT_DOMAIN),
+                    "Raw HTML" => __("Raw HTML", FE_TEXT_DOMAIN),
+                    "Table" => __("Table", FE_TEXT_DOMAIN),
+                    "Link" => __("Link", FE_TEXT_DOMAIN),
+                    "Marker" => __("Marker", FE_TEXT_DOMAIN),
+                    "Bold" => __("Bold", FE_TEXT_DOMAIN),
+                    "Italic" => __("Italic", FE_TEXT_DOMAIN),
+                    "InlineCode" => __("InlineCode", FE_TEXT_DOMAIN),
+                    "Image & Gallery" => __("Image & Gallery", FE_TEXT_DOMAIN),
+                    "Image" => __("Image", FE_TEXT_DOMAIN)
+                ],
+                'tools' => [
+                    'warning' => [
+                        "Title" => __("Title", FE_TEXT_DOMAIN),
+                        "Message" => __("Message", FE_TEXT_DOMAIN)
+                    ],
+                    'link' => [
+                        "Add a link" => __("Add a link", FE_TEXT_DOMAIN),
+                    ],
+                    'stub' => [
+                        "The block can not be displayed correctly." => __("The block can not be displayed correctly.", FE_TEXT_DOMAIN),
+                    ]
+                ],
+                'blockTunes' => [
+                    'delete' => [
+                        "Delete" => __("Delete", FE_TEXT_DOMAIN),
+                    ],
+                    'moveUp' => [
+                        "Move up" => __("Move up", FE_TEXT_DOMAIN),
+                    ],
+                    'moveDown' => [
+                        "Move down" => __("Move down", FE_TEXT_DOMAIN),
+                    ]
+                ]
+            ]
+        ];
 
         return $data;
     }

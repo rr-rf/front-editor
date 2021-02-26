@@ -66,7 +66,6 @@ export default ($, Swal) => {
                 admin_form_builder_nonce: admin_form_builder_nonce
             },
             success: function (response) {
-                console.log(response)
                 let formBuilderId = `form-builder`;
 
                 $(`#${formBuilderId}`).remove();
@@ -89,7 +88,6 @@ export default ($, Swal) => {
                         }
                     }
                 });
-
                 /**
                 * Init formBuilder
                 */
@@ -97,7 +95,7 @@ export default ($, Swal) => {
                     { ...options, ...formBuilderOptions }
                 );
                 formBuilderContainer.promise.then(formBuilder => {
-
+                    console.log(formBuilderOptions)
                     // Remove controls on ajax request if there do not needed
                     builder_control_controls(formBuilderOptions);
 
