@@ -11,7 +11,7 @@ class Shortcodes
 
         add_shortcode('user_posts_list', [__CLASS__, 'user_posts_list']);
 
-        add_shortcode('fe_form', [__CLASS__, 'editor_js']);
+        add_shortcode('fe_form', [__CLASS__, 'fe_form']);
     }
 
     /**
@@ -59,7 +59,7 @@ class Shortcodes
             return '';
         }
 
-        return Editor::show_front_editor($atts);
+        return Editor::show_front_editor($atts, '', 'form_builder');
     }
 
 

@@ -44,7 +44,7 @@ class Editor
 	 *
 	 * @return string
 	 */
-	public static function show_front_editor($attributes, $content = '')
+	public static function show_front_editor($attributes, $content = '', $type = "")
 	{
 		/**
 		 * Adding post meta to know the editor page if no page founded
@@ -117,17 +117,16 @@ class Editor
 			'data'              => apply_filters('fe_localize_editor_content_data', $editor_data),
 			'html_post_content' => $html_content,
 			'translations'      => [
-				'editor_field_placeholder' => __('Start writing or enter Tab to choose a block', FE_TEXT_DOMAIN),
 				'save_button' => [
 					'publish'  => __('Publish', FE_TEXT_DOMAIN),
 					'updating' => sprintf('%s...', __('Updating', FE_TEXT_DOMAIN)),
 					'update'   => __('Update', FE_TEXT_DOMAIN),
 				],
-				
+
 			],
 		];
 
-		$wp_localize_data = apply_filters('bfe_front_editor_localize_data', $data, $attributes);
+		$wp_localize_data = apply_filters('bfe_front_editor_localize_data', $data, $attributes, $post_id);
 		wp_localize_script('bfee-editor.js', 'editor_data', $wp_localize_data);
 
 		/**
@@ -140,7 +139,12 @@ class Editor
 		wp_enqueue_script('bfee-editor.js');
 
 		ob_start();
-		require_once FE_Template_PATH . 'block-editor.php';
+		if($type === 'form_builder'){
+			require_once FE_Template_PATH . 'post-form.php';
+		} else {
+			require_once FE_Template_PATH . 'block-editor.php';
+		}
+		
 		return ob_get_clean();
 	}
 

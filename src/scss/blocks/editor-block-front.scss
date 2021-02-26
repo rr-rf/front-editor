@@ -3,10 +3,10 @@
     background-color: $white;
     width: 100%;
     border-radius: 5px;
-    #bfe-editor-block-header {
+    #bfe-editor-block-header,.wrapper {
         max-width: $editor-max-width;
         margin: 0 auto;
-        .sub-header {
+        .sub-header,.column {
             display: flex;
             //justify-content: space-between;
             flex-wrap: wrap;
@@ -232,10 +232,11 @@
         }
     }
     #bfe-editor-block {
-        padding-right: 35px;
-        padding-left: 30px;
+        // padding-right: 35px;
+        // padding-left: 30px;
         max-width: $editor-max-width;
         margin: 0 auto;
+        width: 100%;
     }
     .ce-toolbar__settings-btn {
         background: white;

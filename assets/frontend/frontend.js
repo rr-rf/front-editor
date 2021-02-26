@@ -624,11 +624,26 @@ if ($("#bfe-editor-block")[0]) {
       }
     }));
   }
+
+  $('.taxonomy-select').each(function (index, element) {
+    var id = $(element).attr('id'),
+        placeholder = $(element).data('placeholder'),
+        add_new = $(element).data('add-new');
+    new slim_select__WEBPACK_IMPORTED_MODULE_2___default.a(_objectSpread({
+      select: "#".concat(id),
+      placeholder: placeholder,
+      hideSelectedOption: true,
+      deselectLabel: deselectLabel
+    }, add_new && {
+      addable: function addable(value) {
+        return AddableSlimSelect(value);
+      }
+    }));
+  });
   /**
    * New value adding function
    * @param {*} value 
    */
-
 
   function AddableSlimSelect(value) {
     // // return false or null if you do not want to allow value to be submitted

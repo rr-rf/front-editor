@@ -23,7 +23,7 @@ class EditorJsField
          */
         add_filter('admin_post_form_formBuilder_settings', [__CLASS__, 'add_field_settings']);
 
-        add_filter('bfe_front_editor_localize_data', [__CLASS__, 'field_setting_for_frontend'], 10, 2);
+        add_filter('bfe_front_editor_localize_data', [__CLASS__, 'field_setting_for_frontend'], 10, 3);
     }
     /**
      * Adding setting to admin
@@ -169,7 +169,7 @@ class EditorJsField
         return $data;
     }
 
-    public static function field_setting_for_frontend($data, $attributes)
+    public static function field_setting_for_frontend($data, $attributes, $post_id)
     {
         $data['editor_settings'] = [
             'editor_image_plugin' => $attributes['editor_image_plugin'] ?? true,
@@ -255,6 +255,8 @@ class EditorJsField
                 ]
             ]
         ];
+
+        $data['translations']['editor_field_placeholder'] = __('Start writing or enter Tab to choose a block', FE_TEXT_DOMAIN);
 
         return $data;
     }

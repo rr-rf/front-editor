@@ -39,6 +39,22 @@ if ($("#bfe-editor-block")[0]) {
         })
     }
 
+    $('.taxonomy-select').each((index, element) => {
+        let id = $(element).attr('id'),
+            placeholder = $(element).data('placeholder'),
+            add_new = $(element).data('add-new');
+
+        new SlimSelect({
+            select: `#${id}`,
+            placeholder: placeholder,
+            hideSelectedOption: true,
+            deselectLabel: deselectLabel,
+            ...(add_new
+                && { addable: (value) => { return AddableSlimSelect(value) } }
+            )
+        })
+    })
+
 
     /**
      * New value adding function
