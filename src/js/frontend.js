@@ -9,6 +9,8 @@
  * Webpack is compiling as the input file.
  */
 
+import './functions.js';
+
 import './inc/editor-block-thumb-logic.js';
 
 import './blocks/editor-block-front.js';

@@ -74,83 +74,70 @@ export default class BfeEditor {
      * @param {*} data 
      */
     save_data(data) {
-        let save_button_messages = this.bfee_data.translations.save_button,
+        let $ = jQuery,
+            save_button_messages = this.bfee_data.translations.save_button,
             save_button = document.querySelector('#save-editor-block'),
             editor_block = document.querySelector('#bfe-editor'),
-            post_id = document.querySelector('#bfe-editor').getAttribute('post_id'),
             post_link = document.querySelector('.view-page'),
-            post_title = document.querySelector('#post_title').value,
             thumb_exist = document.querySelector('#bfe-editor .image_loader'),
-            category = document.querySelector("#bfe-category"),
-            tags = document.querySelector("#bfe-tags"),
-            post_type = document.querySelector("#bfe-post-type"),
             bfe_selected_file = document.querySelector('#img_inp').files[0],
-            editor_post_id = document.querySelector('#bfe-editor').getAttribute('editor_post_id'),
             post_thumbnail_image_id = document.querySelector('#post_thumbnail_image').getAttribute('att-id');
 
         const formData = new FormData();
 
-        formData.append('action', 'bfe_update_post');
+        var formArray = $('#bfe-editor').serializeArray(),
+            formArray_data = this.objectifyForm(formArray);
 
-        formData.append('post_title', post_title);
-
-        formData.append('editor_post_id', editor_post_id);
+        formArray_data.action = 'bfe_update_post';
 
         /**
          * Post image
          */
         if (bfe_selected_file) {
-            formData.append('image', bfe_selected_file);
+            formArray_data.image = 'bfe_selected_file';
         }
 
         /**
          * Sending exist or not post image to understand delete or not it from post
          */
         if (thumb_exist) {
-            formData.append('thumb_exist', thumb_exist.getAttribute('thumb_exist'));
+            formArray_data.thumb_exist = thumb_exist.getAttribute('thumb_exist');
         } else {
-            formData.append('thumb_exist', 0);
+            formArray_data.thumb_exist = 0;
         }
+
+        /**
+         * Updating taxonomy fields
+         */
+        $('.taxonomy-select').each((index, element) => {
+            let element_val = $(element).val(),
+                selected_element = element_val.toString(),
+                name = $(element).attr('name');
+                console.log(name)
+            if (element_val) {
+                formArray_data[name] = selected_element;
+            } else {
+                formArray_data[name] = 'null';
+            }
+        })
 
         /**
          * If wp media uploader is enabled
          */
         if (this.bfee_data.editor_settings.wp_media_uploader && post_thumbnail_image_id) {
-            formData.append('thumb_img_id', post_thumbnail_image_id);
+            formArray_data.thumb_img_id = post_thumbnail_image_id;
         }
 
-        if (category) {
-            let category_val = jQuery(category).val();
-            if (category_val) {
-                let selected_category = category_val.toString();
-                formData.append('category', selected_category);
-            } else {
-                formData.append('category', 'null');
-            }
-        }
-
-        if (tags) {
-            let selected_tags = jQuery(tags).val();
-            if (selected_tags) {
-                formData.append('tags', selected_tags.toString());
-            } else {
-                formData.append('tags', 'null');
-            }
-        }
-
-        if (post_type) {
-            let selected_post_type = post_type.options[post_type.selectedIndex].value;
-            formData.append('post_type', selected_post_type);
-        }
-
-        formData.append('post_id', post_id ?? 'new');
-
-        formData.append('nonce', BfeEditor.get_bfee_data.nonce);
-
-        formData.append('editor_data', JSON.stringify(data));
+        formArray_data.editor_data = JSON.stringify(data);
 
         save_button.innerHTML = save_button_messages.updating;
         save_button.disabled = true;
+
+        for (var key in formArray_data) {
+            formData.append(key, formArray_data[key]);
+        }
+
+        console.log(formArray_data);
 
         fetch(BfeEditor.get_bfee_data.ajax_url, {
             method: 'POST',
@@ -177,13 +164,26 @@ export default class BfeEditor {
                 } else {
                     save_button.innerHTML = save_button_messages.update;
                     save_button.disabled = false;
-                    
+
                     this.bfee_editor.notifier.show({
                         message: data.data.message ?? 'Something goes wrong try later',
                         style: 'error',
                     });
                 }
             }).catch()
+    }
+
+    /**
+     * 
+     * @param {*} formArray 
+     */
+    objectifyForm(formArray) {
+        //serialize data function
+        var returnArray = {};
+        for (var i = 0; i < formArray.length; i++) {
+            returnArray[formArray[i]['name']] = formArray[i]['value'];
+        }
+        return returnArray;
     }
 
     /**

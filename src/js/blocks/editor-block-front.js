@@ -45,6 +45,7 @@ if ($("#bfe-editor-block")[0]) {
             add_new = $(element).data('add-new');
 
         new SlimSelect({
+            text: 'text',
             select: `#${id}`,
             placeholder: placeholder,
             hideSelectedOption: true,
@@ -115,10 +116,14 @@ if ($("#bfe-editor-block")[0]) {
     /**
      * Saving example
      */
-    saveButton.addEventListener('click', function () {
+    saveButton.addEventListener('click', function (ev) {
+
+        ev.preventDefault()
+
         bfe_page_editor.bfee_editor.save().then((savedData) => {
             bfe_page_editor.save_data(savedData);
         });
+
     });
 }
 

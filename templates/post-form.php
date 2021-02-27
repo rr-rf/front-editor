@@ -1,6 +1,6 @@
 <?php
-var_dump(get_post_meta($attributes['id'], 'formBuilderData', true));
 $fields_list = json_decode(get_post_meta($attributes['id'], 'formBuilderData', true), true);
+$form_settings = get_post_meta($attributes['id'], 'fe_form_settings', true);
 $form_id = $attributes['id'] ?? 0;
 ?>
 <form class="bfe-editor" id="bfe-editor">
@@ -8,7 +8,13 @@ $form_id = $attributes['id'] ?? 0;
         <?php if ($form_id) : ?>
             <input type="text" name="form_id" value="<?= $form_id ?>">
             <input type="text" name="post_id" value="<?= $post_id ?>">
-            <input type="text" name="fe_post_type" value="<?= get_post_meta('fe_post_type', $form_id, true) ?>">
+            <input type="text" name="editor_post_id" value="<?= $post_id ?>">
+            <?php
+            foreach ($form_settings as $name => $value) {
+                printf('<input type="text" name="%s" value="%s">', $name, $value);
+            }
+            wp_nonce_field('bfe_nonce')
+            ?>
         <?php endif; ?>
     </div>
 

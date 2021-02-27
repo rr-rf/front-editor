@@ -237,9 +237,13 @@ class PostFormCPT
             update_post_meta($post_ID, 'formBuilderData', $_POST['formBuilderData']);
         }
 
-        if (!empty($_POST['post_type'])) {
-            update_post_meta($post_ID, 'fe_post_type', $_POST['post_type']);
+        /**
+         * Adding all settings to meta fields
+         */
+        if (!empty($_POST['settings'])) {
+            update_post_meta($post_ID, 'fe_form_settings', $_POST['settings']);
         }
+
 
         wp_send_json_success([
             'post_id' => $post_ID,

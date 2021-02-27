@@ -20,6 +20,11 @@ class TaxonomiesFields
         // category selection addon
         add_action('bfe_editor_on_front_field_adding', [__CLASS__, 'front_tax_select'], 10, 3);
         add_filter('bfe_ajax_before_front_editor_post_update_or_creation', [__CLASS__, 'add_tax_on_save_and_check'], 10, 3);
+
+        /**
+         * Adding taxonomies
+         */
+        add_action('bfe_ajax_after_front_editor_post_update_or_creation', [__CLASS__, 'add_tax_after_post_created'], 10);
     }
 
     /**
@@ -132,36 +137,85 @@ class TaxonomiesFields
     }
 
 
+    /**
+     * Checking tax fields on form save from front before post created
+     *
+     * @param [type] $post_data
+     * @param [type] $data
+     * @param [type] $file
+     * @return void
+     */
     public static function add_tax_on_save_and_check($post_data, $data, $file)
     {
-        if (empty($_POST['category'])) {
+        if (!isset($_POST['tax']) || empty($_POST['tax'])) {
             return $post_data;
         }
 
-        $settings = get_post_meta($_POST['editor_post_id'], 'save_editor_attributes_to_meta', 1);
-        $post_category_settings = sanitize_text_field($settings['post_category']);
-        $post_category_val = sanitize_text_field($_POST['category']);
-        $post_id = intval(sanitize_text_field($_POST['post_id']));
+        foreach ($_POST['tax'] as $tax_name => $settings) {
 
-        if ($post_category_settings === 'disable') {
-            return $post_data;
-        }
-
-        if ($post_category_settings === 'require' && empty($post_category_val)) {
-            wp_send_json_error(['message' => __('The category selection is required', FE_TEXT_DOMAIN)]);
-        }
-
-        if ($post_category_val === 'null') {
-            if ($post_id) {
-                wp_delete_object_term_relationships($post_id, 'category');
+            if ($settings['required'] === 'true' && empty($settings['ids'])) {
+                wp_send_json_error(['message' => sprintf(__('The %s selection is required', FE_TEXT_DOMAIN), $tax_name)]);
             }
-        }
 
-        if (!empty($post_category_val) && $post_category_val !== 'null') {
-            $post_data['post_category'] = explode(",", $post_category_val);
+            if (empty($settings['ids'])) {
+                $post_id = intval(sanitize_text_field($_POST['post_id']));
+                if ($post_id) {
+                    wp_delete_object_term_relationships($post_id, $tax_name);
+                }
+            }
+
+            // if (!empty($settings['ids']) && $settings['ids'] !== 'null') {
+            //     $post_data['post_category'] = explode(",", $settings['ids']);
+            // }
         }
 
         return $post_data;
+    }
+
+
+    /**
+     * Add post after post created
+     *
+     * @param [type] $post_id
+     * @return void
+     */
+    public static function add_tax_after_post_created($post_id)
+    {
+        if (empty($_POST['tax'])) {
+            return;
+        }
+
+        foreach ($_POST['tax'] as $tax_name => $settings) {
+            $terms = explode(",", $settings['ids']);
+
+            if (!empty($terms)) {
+                $terms_ids = [];
+                foreach ($terms as $term) {
+                    /**
+                     * Checking if term exist if not creating it
+                     */
+                    $term_data = get_term_by('id', $term, $tax_name);
+
+                    if (!$term_data) {
+                        $term_data = get_term_by('name', $term, $tax_name);
+                    }
+                    
+                    if (!$term_data) {
+                        $term_data = wp_insert_term(
+                            $term,
+                            $tax_name
+                        );
+                        $term_id = $term_data['term_id'];
+                    } else {
+                        $term_id = $term_data->term_id;
+                    }
+
+                    $terms_ids[] = (int) $term_id;
+                }
+                // Attach to post
+                wp_set_object_terms($post_id, $terms_ids, $tax_name);
+            }
+        }
     }
 }
 

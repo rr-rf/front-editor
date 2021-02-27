@@ -122,14 +122,7 @@ class PostThumbField
      */
     public static function image_on_save_check($post_data, $data, $file)
     {
-
-        $settings = get_post_meta($_POST['editor_post_id'], 'save_editor_attributes_to_meta', 1);
-        $post_image = sanitize_text_field($settings['post_image']);
         $is_featured_image_exist = $_POST['thumb_exist'] ?? 0;
-
-        if ($post_image === 'disable') {
-            return $post_data;
-        }
 
         if ($is_featured_image_exist) {
             return $post_data;

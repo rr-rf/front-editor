@@ -10,9 +10,9 @@
         <div>
             <p><?= __('Shortcode', FE_TEXT_DOMAIN) ?></p>
             <?php
-                $shortcode = '[fe_form id="%s"]';
+            $shortcode = '[fe_form id="%s"]';
             ?>
-            <code><?php echo $post_ID !== 'new' ? sprintf($shortcode,$post_ID) : '' ?></code>
+            <code><?php echo $post_ID !== 'new' ? sprintf($shortcode, $post_ID) : '' ?></code>
         </div>
 
         <input type="text" id="post_id" name="post_id" value="<?php echo $post_ID ?>" class="hidden">
@@ -29,11 +29,11 @@
         <div id="post-form-builder" class="group active">
             <h3><?= __('Options', FE_TEXT_DOMAIN) ?></h3>
             <span><?= __('Select post type', FE_TEXT_DOMAIN) ?></span>
-            <select name="post_type" id="fe_settings_post_type">
+            <select name="settings[fe_post_type]" id="fe_settings_post_type">
                 <?php
 
                 $post_types = get_post_types();
-                $post_type_selected    = get_post_meta($post_ID,'fe_post_type',true) ? get_post_meta($post_ID,'fe_post_type',true) : 'post';
+                $post_type_selected    = get_post_meta($post_ID, 'fe_post_type', true) ? get_post_meta($post_ID, 'fe_post_type', true) : 'post';
                 unset($post_types['attachment']);
                 unset($post_types['revision']);
                 unset($post_types['nav_menu_item']);
@@ -50,6 +50,20 @@
 
                 foreach ($post_types as $post_type) {
                     printf('<option value="%s"%s>%s</option>', esc_attr($post_type), esc_attr(selected($post_type_selected, $post_type, false)), esc_html($post_type));
+                }; ?>
+            </select>
+            <span><?= __('Post Status', FE_TEXT_DOMAIN) ?></span>
+            <select name="settings[fe_post_status]" id="fe_settings_post_status">
+                <?php
+                $post_statuses = [
+                    'publish' => __('Publish', FE_TEXT_DOMAIN),
+                    'pending' => __('Pending', FE_TEXT_DOMAIN)
+                ];
+
+                $post_status_selected    = get_post_meta($post_ID, 'fe_post_status', true) ? get_post_meta($post_ID, 'fe_post_status', true) : 'publish';
+
+                foreach ($post_statuses as $status => $label) {
+                    printf('<option value="%s"%s>%s</option>', esc_attr($status), esc_attr(selected($post_status_selected, $status, false)), esc_html($label));
                 }; ?>
             </select>
             <div class="formBuilder-wrapper">

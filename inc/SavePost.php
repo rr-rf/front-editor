@@ -88,7 +88,7 @@ class SavePost
 	 */
 	public static function update_or_add_post()
 	{
-		if (!wp_verify_nonce($_POST['nonce'], 'bfe_nonce')) {
+		if (!wp_verify_nonce($_POST['_wpnonce'], 'bfe_nonce')) {
 			wp_send_json_error(array('message' => __('Security error, please update page', FE_TEXT_DOMAIN)));
 		}
 
@@ -152,7 +152,7 @@ class SavePost
 			$post_id                  = self::insert_post($post_data);
 		}
 
-		add_action('bfe_ajax_after_front_editor_post_update_or_creation', $post_id);
+		do_action('bfe_ajax_after_front_editor_post_update_or_creation', $post_id);
 
 		/**
 		 * Adding to meta json string.
@@ -188,14 +188,11 @@ class SavePost
 	 */
 	public static function add_post_status_check($post_data, $data, $file)
 	{
-		$settings = get_post_meta($_POST['editor_post_id'], 'save_editor_attributes_to_meta', 1);
-		$post_status = sanitize_text_field($settings['editor_post_status']);
-
-		if (empty($post_status)) {
-			return $post_data;
+		if (!isset($_POST['fe_post_status'])) {
+			return $post_data['post_status'] = 'publish';
 		}
 
-		$post_data['post_status'] = $post_status;
+		$post_data['post_status'] = $_POST['fe_post_status'];
 
 		return $post_data;
 	}

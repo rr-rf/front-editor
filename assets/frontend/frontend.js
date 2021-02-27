@@ -630,6 +630,7 @@ if ($("#bfe-editor-block")[0]) {
         placeholder = $(element).data('placeholder'),
         add_new = $(element).data('add-new');
     new slim_select__WEBPACK_IMPORTED_MODULE_2___default.a(_objectSpread({
+      text: 'text',
       select: "#".concat(id),
       placeholder: placeholder,
       hideSelectedOption: true,
@@ -697,7 +698,8 @@ if ($("#bfe-editor-block")[0]) {
    * Saving example
    */
 
-  saveButton.addEventListener('click', function () {
+  saveButton.addEventListener('click', function (ev) {
+    ev.preventDefault();
     bfe_page_editor.bfee_editor.save().then(function (savedData) {
       bfe_page_editor.save_data(savedData);
     });
@@ -715,9 +717,11 @@ if ($("#bfe-editor-block")[0]) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _inc_editor_block_thumb_logic_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./inc/editor-block-thumb-logic.js */ "./src/js/inc/editor-block-thumb-logic.js");
-/* harmony import */ var _inc_editor_block_thumb_logic_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_inc_editor_block_thumb_logic_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _blocks_editor_block_front_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./blocks/editor-block-front.js */ "./src/js/blocks/editor-block-front.js");
+/* harmony import */ var _functions_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./functions.js */ "./src/js/functions.js");
+/* harmony import */ var _functions_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_functions_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _inc_editor_block_thumb_logic_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./inc/editor-block-thumb-logic.js */ "./src/js/inc/editor-block-thumb-logic.js");
+/* harmony import */ var _inc_editor_block_thumb_logic_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_inc_editor_block_thumb_logic_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _blocks_editor_block_front_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./blocks/editor-block-front.js */ "./src/js/blocks/editor-block-front.js");
 /**
  * Gutenberg Blocks
  *
@@ -730,6 +734,45 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 
+
+
+/***/ }),
+
+/***/ "./src/js/functions.js":
+/*!*****************************!*\
+  !*** ./src/js/functions.js ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * Vanilla js serialize array function
+ * @param {*} form 
+ */
+var serializeArray = function serializeArray(form) {
+  var arr = [];
+  Array.prototype.slice.call(form.elements).forEach(function (field) {
+    if (!field.name || field.disabled || ['file', 'reset', 'submit', 'button'].indexOf(field.type) > -1) return;
+
+    if (field.type === 'select-multiple') {
+      Array.prototype.slice.call(field.options).forEach(function (option) {
+        if (!option.selected) return;
+        arr.push({
+          name: field.name,
+          value: option.value
+        });
+      });
+      return;
+    }
+
+    if (['checkbox', 'radio'].indexOf(field.type) > -1 && !field.checked) return;
+    arr.push({
+      name: field.name,
+      value: field.value
+    });
+  });
+  return arr;
+};
 
 /***/ }),
 
@@ -830,29 +873,24 @@ var BfeEditor = /*#__PURE__*/function () {
     value: function save_data(data) {
       var _this = this;
 
-      var save_button_messages = this.bfee_data.translations.save_button,
+      var $ = jQuery,
+          save_button_messages = this.bfee_data.translations.save_button,
           save_button = document.querySelector('#save-editor-block'),
           editor_block = document.querySelector('#bfe-editor'),
-          post_id = document.querySelector('#bfe-editor').getAttribute('post_id'),
           post_link = document.querySelector('.view-page'),
-          post_title = document.querySelector('#post_title').value,
           thumb_exist = document.querySelector('#bfe-editor .image_loader'),
-          category = document.querySelector("#bfe-category"),
-          tags = document.querySelector("#bfe-tags"),
-          post_type = document.querySelector("#bfe-post-type"),
           bfe_selected_file = document.querySelector('#img_inp').files[0],
-          editor_post_id = document.querySelector('#bfe-editor').getAttribute('editor_post_id'),
           post_thumbnail_image_id = document.querySelector('#post_thumbnail_image').getAttribute('att-id');
       var formData = new FormData();
-      formData.append('action', 'bfe_update_post');
-      formData.append('post_title', post_title);
-      formData.append('editor_post_id', editor_post_id);
+      var formArray = $('#bfe-editor').serializeArray(),
+          formArray_data = this.objectifyForm(formArray);
+      formArray_data.action = 'bfe_update_post';
       /**
        * Post image
        */
 
       if (bfe_selected_file) {
-        formData.append('image', bfe_selected_file);
+        formArray_data.image = 'bfe_selected_file';
       }
       /**
        * Sending exist or not post image to understand delete or not it from post
@@ -860,50 +898,44 @@ var BfeEditor = /*#__PURE__*/function () {
 
 
       if (thumb_exist) {
-        formData.append('thumb_exist', thumb_exist.getAttribute('thumb_exist'));
+        formArray_data.thumb_exist = thumb_exist.getAttribute('thumb_exist');
       } else {
-        formData.append('thumb_exist', 0);
+        formArray_data.thumb_exist = 0;
       }
+      /**
+       * Updating taxonomy fields
+       */
+
+
+      $('.taxonomy-select').each(function (index, element) {
+        var element_val = $(element).val(),
+            selected_element = element_val.toString(),
+            name = $(element).attr('name');
+        console.log(name);
+
+        if (element_val) {
+          formArray_data[name] = selected_element;
+        } else {
+          formArray_data[name] = 'null';
+        }
+      });
       /**
        * If wp media uploader is enabled
        */
 
-
       if (this.bfee_data.editor_settings.wp_media_uploader && post_thumbnail_image_id) {
-        formData.append('thumb_img_id', post_thumbnail_image_id);
+        formArray_data.thumb_img_id = post_thumbnail_image_id;
       }
 
-      if (category) {
-        var category_val = jQuery(category).val();
-
-        if (category_val) {
-          var selected_category = category_val.toString();
-          formData.append('category', selected_category);
-        } else {
-          formData.append('category', 'null');
-        }
-      }
-
-      if (tags) {
-        var selected_tags = jQuery(tags).val();
-
-        if (selected_tags) {
-          formData.append('tags', selected_tags.toString());
-        } else {
-          formData.append('tags', 'null');
-        }
-      }
-
-      if (post_type) {
-        var selected_post_type = post_type.options[post_type.selectedIndex].value;
-        formData.append('post_type', selected_post_type);
-      }
-
-      formData.append('post_id', post_id !== null && post_id !== void 0 ? post_id : 'new');
-      formData.append('nonce', BfeEditor.get_bfee_data.nonce);
-      formData.append('editor_data', JSON.stringify(data));
+      formArray_data.editor_data = JSON.stringify(data);
       save_button.innerHTML = save_button_messages.updating;
       save_button.disabled = true;
+
+      for (var key in formArray_data) {
+        formData.append(key, formArray_data[key]);
+      }
+
+      console.log(formArray_data);
       fetch(BfeEditor.get_bfee_data.ajax_url, {
         method: 'POST',
         body: formData
@@ -939,6 +971,23 @@ var BfeEditor = /*#__PURE__*/function () {
           });
         }
       }).catch();
+    }
+    /**
+     * 
+     * @param {*} formArray 
+     */
+
+  }, {
+    key: "objectifyForm",
+    value: function objectifyForm(formArray) {
+      //serialize data function
+      var returnArray = {};
+
+      for (var i = 0; i < formArray.length; i++) {
+        returnArray[formArray[i]['name']] = formArray[i]['value'];
+      }
+
+      return returnArray;
     }
     /**
      * Save on change data

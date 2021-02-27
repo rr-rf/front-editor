@@ -113,7 +113,6 @@ class Editor
 
 		$data = [
 			'ajax_url'          => admin_url('admin-ajax.php'),
-			'nonce'             => wp_create_nonce('bfe_nonce'),
 			'data'              => apply_filters('fe_localize_editor_content_data', $editor_data),
 			'html_post_content' => $html_content,
 			'translations'      => [
