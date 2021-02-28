@@ -53,12 +53,13 @@ class Editor
 			update_post_meta(get_the_ID(), 'editor_js_page', true);
 		}
 
+		$attributes['id'] = isset($attributes['id']) ? (int) sanitize_text_field($attributes['id']) : 0;
+
 		$post_id       = 'new';
 		$editor_data   = 'new';
 		$button_text   = __('Publish', FE_TEXT_DOMAIN);
 		$html_content  = '';
 		$new_post_link = self::get_editor_page_link();
-		$attributes['id'] = isset($attributes['id']) ? (int) sanitize_text_field($attributes['id']) : 0;
 
 		do_action('bfe_before_editor_block_front_print', $attributes);
 
@@ -77,6 +78,15 @@ class Editor
 
 		if (!self::can_edit_post(0, $post_id)) {
 			return sprintf('<h2>%s</h2>', __('You do not have permission to edit this post', FE_TEXT_DOMAIN));
+		}
+		
+		if (!$attributes['id']) {
+			return sprintf(
+				'<h2>%s <a href="%s">%s</a></h2>',
+				__('Post form is not selected please select existing one or'),
+				admin_url('admin.php?page=fe-post-forms&action=add-new'),
+				__('Create New One', FE_TEXT_DOMAIN)
+			);
 		}
 
 		if ('new' !== $post_id) {
