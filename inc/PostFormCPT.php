@@ -370,7 +370,7 @@ class PostFormCPT
             return false;
         }
 
-        if(!empty($form_settings)){
+        if(!empty($form_settings) && !$form_id){
             $form_settings = json_decode(stripslashes($_POST['formBuilderData']),true);
         }
 

@@ -20,8 +20,7 @@ class Block
     {
         add_action('init', [__CLASS__, 'gutenberg_add_editor_block']);
         add_action('enqueue_block_editor_assets', [__CLASS__, 'gutenberg_editor_block_editor_scripts']);
-        
-         }
+    }
 
     /**
      * Gutenberg block scripts
@@ -50,38 +49,16 @@ class Block
         $data = [
             'fe_edit_link' => Editor::get_post_edit_link(get_the_ID()),
             'translations' => [
+                'title' => __('Select Post Form', FE_TEXT_DOMAIN),
                 'fe_edit_link_text' => __('Edit in front editor', FE_TEXT_DOMAIN),
                 'fe_edit_message' => __('This post created with the Front Editor plugin. Please edit it using Front Editor to not have issues with the plugin!', FE_TEXT_DOMAIN),
-                'publish' => __('Publish', FE_TEXT_DOMAIN),
-                'pending' => __('Pending', FE_TEXT_DOMAIN),
-                'post_status' => __('Post status', FE_TEXT_DOMAIN),
-                'post_status_desc' => __('when user is adding the post what status it must have', FE_TEXT_DOMAIN),
-                'title' => __('Front editor settings', FE_TEXT_DOMAIN),
-                'post_image' => __('Post image', FE_TEXT_DOMAIN),
-                'post_category' => __('Post category', FE_TEXT_DOMAIN),
-                'show_empty_category' => __('Show empty categories', FE_TEXT_DOMAIN),
-                'category_multiple' => __('Choose multiple categories', FE_TEXT_DOMAIN),
-                'category_settings_title' => __('Category settings', FE_TEXT_DOMAIN),
-                'post_tags' => __('Post tags', FE_TEXT_DOMAIN),
-                'tags_settings_title' => __('Tags settings', FE_TEXT_DOMAIN),
-                'tags_add_new' => __('Ability to add new tags', FE_TEXT_DOMAIN),
-                'display' => __('Display', FE_TEXT_DOMAIN),
-                'always_display' => __('Always display', FE_TEXT_DOMAIN),
-                'add_new_button' => __('Add new button', FE_TEXT_DOMAIN),
-                'require' => __('Display and require', FE_TEXT_DOMAIN),
-                'disable' => __('Disable this field', FE_TEXT_DOMAIN),
-                'editor_settings_title' => __('Editor plugins', FE_TEXT_DOMAIN),
-                'only_in_pro' => __('Available only in pro version.', FE_TEXT_DOMAIN),
-                'wp_media_uploader' => __('Image and Gallery using WP Media Uploader', FE_TEXT_DOMAIN)
+                'form_builder_id' => __('Choose form', FE_TEXT_DOMAIN),
+                'create_new_form' => __('Create new form', FE_TEXT_DOMAIN)
             ],
-            'editor_pro_settings' => [
-                'table_block' => false,
-                'warning_block' => false,
-                'gallery_block' => false,
-                'category_multiple' => false,
-                'wp_media_uploader' => false,
-            ]
+            'create_new_post_form_link' => admin_url('admin.php?page=fe-post-forms&action=add-new')
         ];
+
+        $data['post_form_list'] = self::get_list_of_post_forms();
 
         /**
          * If post edited with Front Editor
@@ -94,6 +71,32 @@ class Block
         wp_enqueue_script('bfe-block-script');
 
         wp_localize_script('bfe-block-script', 'editor_block_data', apply_filters('bfe_front_editor_backend_block_localize_data', $data));
+    }
+
+
+    /**
+     * Get form lists
+     *
+     * @return void
+     */
+    public static function get_list_of_post_forms()
+    {
+        $posts = get_posts(['numberposts' => -1, 'post_type'   => 'fe_post_form']);
+        $array = [];
+
+        $array[] = [
+            'value' => '0',
+            'label' => __('Choose form', FE_TEXT_DOMAIN)
+        ];
+
+        foreach ($posts as $post) {
+            $array[] = [
+                'value' => $post->ID,
+                'label' => sprintf('%s (%s)', $post->post_title, $post->ID)
+            ];
+        }
+
+        return $array;
     }
 
     /**
@@ -132,7 +135,7 @@ class Block
         ]);
     }
 
-    
+
     /**
      * Add post image selection
      *

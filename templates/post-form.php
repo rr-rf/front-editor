@@ -41,7 +41,7 @@ $form_id = $attributes['id'] ?? 0;
                             printf('<input id="post_title" name="post_title" type="text" placeholder="%s" value="%s">', __('Add Title', FE_TEXT_DOMAIN), get_the_title($post_id));
                             break;
                         case 'post_content_editor_js':
-                            echo '<div id="bfe-editor-block" post_id="<?= $post_id; ?>"></div>';
+                            printf('<div id="bfe-editor-block" post_id="%s"></div>',$post_id);
                             break;
                         default:
                             do_action('bfe_editor_on_front_field_adding', $post_id, $attributes, $field);
