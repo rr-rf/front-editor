@@ -20,10 +20,11 @@ class PostFormCPT
      */
     public static function init()
     {
-        require_once __DIR__ . '/post-form-builder/PostTitleField.php';
-        require_once __DIR__ . '/post-form-builder/PostThumbField.php';
-        require_once __DIR__ . '/post-form-builder/EditorJsField.php';
-        require_once __DIR__ . '/post-form-builder/TaxonomiesFields.php';
+        require_once __DIR__ . '/fields/PostTitleField.php';
+        require_once __DIR__ . '/fields/PostThumbField.php';
+        require_once __DIR__ . '/fields/EditorJsField.php';
+        require_once __DIR__ . '/fields/TaxonomiesFields.php';
+        require_once __DIR__ . '/fields/TextField.php';
 
         /**
          * Registering custom post type
@@ -93,8 +94,8 @@ class PostFormCPT
                 'disable_attr' => [],
                 'templates' => [],
                 'temp_back' => [],
-                'disableFields' => ['autocomplete', 'textarea', 'button', 'checkbox-group', 'date', 'file', 'header', 'hidden', 'radio-group', 'select', 'number'],
-                'defaultControls' => ['paragraph', 'text'],
+                'disableFields' => ['autocomplete','paragraph','textarea', 'button', 'checkbox-group', 'date', 'file', 'header', 'hidden', 'radio-group', 'select', 'number'],
+                'defaultControls' => ['text'],
                 'controls_group' => [
                     'post_fields' => [
                         'label' => __('Post Fields', FE_TEXT_DOMAIN),
