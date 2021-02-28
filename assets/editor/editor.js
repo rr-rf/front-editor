@@ -3950,6 +3950,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
    */
 
   function updateFormBuilder() {
+    var action = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'load';
     var post_type = $('#fe_settings_post_type').val();
 
     if (post_type) {
@@ -3994,7 +3995,10 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
           add_groups(); // Adding data 
 
-          formBuilderContainer.actions.setData(response.formBuilderData); // Disable pro fields
+          if (action === 'load') {
+            formBuilderContainer.actions.setData(response.formBuilderData);
+          } // Disable pro fields
+
 
           formBuilderOptions.disable_attr.map(function (val) {
             $(document).find(val).prop('disabled', true);
@@ -4019,7 +4023,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
     Swal.showLoading();
     data.formBuilderData = formBuilderContainer.actions.getData('json', true);
     data.action = 'save_post_front_settings';
-    console.log(data);
     wp.ajax.send('save_post_front_settings', {
       data: data,
       success: function success(response) {
@@ -4054,7 +4057,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
   $('#fe_settings_post_type').on('change', function (ev) {
     ev.preventDefault();
-    updateFormBuilder();
+    updateFormBuilder('post_type_change');
   });
   /**
    * Save data

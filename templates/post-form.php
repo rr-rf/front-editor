@@ -22,7 +22,7 @@ $form_id = $attributes['id'] ?? 0;
         <div class="sub-header top">
             <button class="editor-button big" id="save-editor-block" title="<?php echo $button_text ?>"><?php echo $button_text ?></button>
             <?php
-            $add_new_button = $attributes['add_new_button'] ?? false;
+            $add_new_button = $form_settings['add_new_button'] ?? false;
             if (($post_id !== 'new' && $add_new_button !== 'disable') || $add_new_button === 'always_display') : ?>
                 <a target="_blank" class="editor-button" href="<?= $new_post_link ?>" title="<?= __('Add new', FE_TEXT_DOMAIN) ?>"><?= __('Add new', FE_TEXT_DOMAIN) ?></a>
             <?php endif; ?>

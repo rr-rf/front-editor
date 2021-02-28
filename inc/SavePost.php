@@ -130,7 +130,8 @@ class SavePost
 			'post_content' => $content_html,
 		);
 
-		$post_data['post_status'] = 'publish';
+		$post_data['post_status'] = isset($_POST['fe_post_status']) ? sanitize_text_field($_POST['fe_post_status']) : 'publish';
+		$post_data['post_type'] = isset($_POST['fe_post_type']) ? sanitize_text_field($_POST['fe_post_type']) : 'post';
 
 		/**
 		 * Before post creation or update
@@ -163,7 +164,7 @@ class SavePost
 		/**
 		 * Adding post thumbnail
 		 */
-		$thumb_img_id = (int) sanitize_text_field( $_POST['thumb_img_id'] );
+		$thumb_img_id = (int) sanitize_text_field($_POST['thumb_img_id']);
 		$thumb_exist = intval(sanitize_text_field($_POST['thumb_exist'])) ?? 0;
 		if (!$thumb_img_id) {
 			self::add_post_thumbnail($post_id, self::fe_sanitize_image() ?? '', $thumb_exist);

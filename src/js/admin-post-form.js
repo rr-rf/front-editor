@@ -65,7 +65,7 @@ export default ($, Swal) => {
     /**
      * Update form builder
      */
-    function updateFormBuilder() {
+    function updateFormBuilder(action = 'load') {
         let post_type = $('#fe_settings_post_type').val();
 
         if (post_type) {
@@ -115,7 +115,9 @@ export default ($, Swal) => {
                     add_groups()
 
                     // Adding data 
-                    formBuilderContainer.actions.setData(response.formBuilderData);
+                    if(action === 'load'){
+                        formBuilderContainer.actions.setData(response.formBuilderData);
+                    }
 
                     // Disable pro fields
                     formBuilderOptions.disable_attr.map((val) => {
@@ -145,7 +147,6 @@ export default ($, Swal) => {
         data.formBuilderData = formBuilderContainer.actions.getData('json', true);
         data.action = 'save_post_front_settings';
 
-        console.log(data)
         wp.ajax.send('save_post_front_settings', {
             data: data,
             success: function (response) {
@@ -176,7 +177,7 @@ export default ($, Swal) => {
      */
     $('#fe_settings_post_type').on('change', function (ev) {
         ev.preventDefault();
-        updateFormBuilder();
+        updateFormBuilder('post_type_change');
     });
 
     /**

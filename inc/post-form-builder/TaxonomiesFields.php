@@ -187,8 +187,11 @@ class TaxonomiesFields
             if (!empty($terms)) {
                 $terms_ids = [];
                 foreach ($terms as $term) {
+                    if(empty($term)){
+                        continue;
+                    }
                     /**
-                     * Checking if term exist if not creating it
+                     * Checking if term exist i)f not creating it
                      */
                     $term_data = get_term_by('id', $term, $tax_name);
 

@@ -11,34 +11,6 @@ if ($("#bfe-editor-block")[0]) {
         deselectLabel = '<span >✖</span>',
         is_addable_tags = fe_data.editor_settings.tags_add_new;
 
-    /**
-     * SlimSelect for category
-     */
-    if (category_select.length > 0) {
-        new SlimSelect({
-            select: '#bfe-category',
-            placeholder: category_select.data('placeholder'),
-            deselectLabel: deselectLabel,
-            allowDeselect: true,
-            //addable:(value)=>{return AddableSlimSelect(value)}
-        })
-    }
-
-    /**
-     * SlimSelect for tags
-     */
-    if (tags_select.length > 0) {
-        new SlimSelect({
-            select: '#bfe-tags',
-            placeholder: tags_select.data('placeholder'),
-            hideSelectedOption: true,
-            deselectLabel: deselectLabel,
-            ...(is_addable_tags
-                && { addable: (value) => { return AddableSlimSelect(value) } }
-            )
-        })
-    }
-
     $('.taxonomy-select').each((index, element) => {
         let id = $(element).attr('id'),
             placeholder = $(element).data('placeholder'),

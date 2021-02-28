@@ -21,9 +21,9 @@ class PostFormCPT
     public static function init()
     {
         require_once __DIR__ . '/post-form-builder/PostTitleField.php';
+        require_once __DIR__ . '/post-form-builder/PostThumbField.php';
         require_once __DIR__ . '/post-form-builder/EditorJsField.php';
         require_once __DIR__ . '/post-form-builder/TaxonomiesFields.php';
-        require_once __DIR__ . '/post-form-builder/PostThumbField.php';
 
         /**
          * Registering custom post type
@@ -93,8 +93,8 @@ class PostFormCPT
                 'disable_attr' => [],
                 'templates' => [],
                 'temp_back' => [],
-                'disableFields' => ['autocomplete', 'button', 'checkbox-group', 'date', 'file', 'header', 'hidden', 'radio-group', 'select', 'number'],
-                'defaultControls' => ['paragraph', 'text', 'textarea'],
+                'disableFields' => ['autocomplete', 'textarea', 'button', 'checkbox-group', 'date', 'file', 'header', 'hidden', 'radio-group', 'select', 'number'],
+                'defaultControls' => ['paragraph', 'text'],
                 'controls_group' => [
                     'post_fields' => [
                         'label' => __('Post Fields', FE_TEXT_DOMAIN),
@@ -215,7 +215,7 @@ class PostFormCPT
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
             return;
 
-        do_action('fe_before_wp_admin_form_create_save',$_POST);
+        do_action('fe_before_wp_admin_form_create_save', $_POST);
 
         $title = isset($_POST['fe_title']) ? $_POST['fe_title'] : __('Sample Form', FE_TEXT_DOMAIN);
         if (!empty($_POST['post_id']) && $_POST['post_id'] !== 'new') {
@@ -235,7 +235,7 @@ class PostFormCPT
         /**
          * Saving data
          */
-        if (empty(json_decode(stripslashes($_POST['formBuilderData']),true))) {
+        if (empty(json_decode(stripslashes($_POST['formBuilderData']), true))) {
             wp_send_json_success([
                 'post_id' => $post_ID,
                 'message' => [
@@ -362,20 +362,20 @@ class PostFormCPT
      */
     public static function get_form_field_settings($name, $form_id = 0, $form_settings = [])
     {
-        if(empty($form_settings)){
-            $form_settings = json_decode(get_post_meta($form_id, 'formBuilderData', true),true);
+        if (empty($form_settings)) {
+            $form_settings = json_decode(get_post_meta($form_id, 'formBuilderData', true), true);
         }
-        
-        if(empty($form_settings)){
+
+        if (empty($form_settings)) {
             return false;
         }
 
-        if(!empty($form_settings) && !$form_id){
-            $form_settings = json_decode(stripslashes($_POST['formBuilderData']),true);
+        if (!empty($form_settings) && !$form_id) {
+            $form_settings = json_decode(stripslashes($_POST['formBuilderData']), true);
         }
 
-        foreach($form_settings as $field){
-            if($field['type'] === $name){
+        foreach ($form_settings as $field) {
+            if ($field['type'] === $name) {
                 return $field;
             }
         }

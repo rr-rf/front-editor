@@ -1,3 +1,6 @@
+<?php 
+$form_settings = get_post_meta($post_ID, 'fe_form_settings', true);
+?>
 <form action id="fe-fromBuilder">
     <?php // wp nonce for security
     wp_nonce_field('admin_form_builder_nonce', 'admin_form_builder_nonce');
@@ -33,7 +36,7 @@
                 <?php
 
                 $post_types = get_post_types();
-                $post_type_selected    = get_post_meta($post_ID, 'fe_post_type', true) ? get_post_meta($post_ID, 'fe_post_type', true) : 'post';
+                $post_type_selected    = isset($form_settings['fe_post_type']) ? $form_settings['fe_post_type'] : 'post';
                 unset($post_types['attachment']);
                 unset($post_types['revision']);
                 unset($post_types['nav_menu_item']);
@@ -68,7 +71,7 @@
                         'pending' => __('Pending', FE_TEXT_DOMAIN)
                     ];
 
-                    $post_status_selected    = get_post_meta($post_ID, 'fe_post_status', true) ? get_post_meta($post_ID, 'fe_post_status', true) : 'publish';
+                    $post_status_selected    = isset($form_settings['fe_post_status']) ? $form_settings['fe_post_status'] : 'publish';
 
                     foreach ($post_statuses as $status => $label) {
                         printf('<option value="%s"%s>%s</option>', esc_attr($status), esc_attr(selected($post_status_selected, $status, false)), esc_html($label));
@@ -77,10 +80,10 @@
             </div>
             <div class="setting">
                 <span><?= __('Add new button', FE_TEXT_DOMAIN) ?></span>
-                <select class="components-select-control__input css-1kus6y6-Select e12x0a390" id="inspector-select-control-4">
-                    <option value="display">Display</option>
-                    <option value="always_display">Always display</option>
-                    <option value="disable">Disable this field</option>
+                <select name="settings[fe_add_new_button]" id="fe_add_new_button">
+                    <option value="display"><?= __("Display", FE_TEXT_DOMAIN) ?></option>
+                    <option value="always_display"><?= __("Always display", FE_TEXT_DOMAIN) ?></option>
+                    <option value="disable"><?= __("Disable this field", FE_TEXT_DOMAIN) ?></option>
                 </select>
             </div>
         </div>
