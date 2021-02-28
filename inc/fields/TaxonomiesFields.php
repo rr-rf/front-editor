@@ -187,7 +187,7 @@ class TaxonomiesFields
             if (!empty($terms)) {
                 $terms_ids = [];
                 foreach ($terms as $term) {
-                    if(empty($term)){
+                    if(empty($term) || $term === 'null'){
                         continue;
                     }
                     /**
