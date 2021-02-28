@@ -60,13 +60,6 @@ class Editor
 		$new_post_link = self::get_editor_page_link();
 		$attributes['id'] = isset($attributes['id']) ? (int) sanitize_text_field($attributes['id']) : 0;
 
-		update_post_meta(get_the_ID(), 'save_editor_attributes_to_meta', [
-			'editor_post_status' => $attributes['editor_post_status'] ?? 'pending',
-			'post_image' => $attributes['post_image'] ?? 'display',
-			'post_category' => $attributes['post_category'] ?? 'display',
-			'post_tags' => $attributes['post_tags'] ?? 'display',
-		]);
-
 		do_action('bfe_before_editor_block_front_print', $attributes);
 
 		if (!empty($_GET['post_id'])) {
