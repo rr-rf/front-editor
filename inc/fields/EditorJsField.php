@@ -171,7 +171,6 @@ class EditorJsField
         /**
          * Disable attr if there is no pro version
          */
-        $data['formBuilder_options']['disable_attr'][] = '.fld-editor_warning_plugin';
         $data['formBuilder_options']['disable_attr'][] = '.fld-editor_gallery_plugin';
         $data['formBuilder_options']['disable_attr'][] = '.fld-editor_table_plugin';
         $data['formBuilder_options']['disable_attr'][] = '.fld-editor_warning_plugin';

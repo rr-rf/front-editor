@@ -34,6 +34,46 @@ class BestFrontEndEditor
    */
   public static function init()
   {
+    if ( ! function_exists( 'fe_fs' ) ) {
+      // Create a helper function for easy SDK access.
+      function fe_fs() {
+          global $fe_fs;
+  
+          if ( ! isset( $fe_fs ) ) {
+              // Include Freemius SDK.
+              require_once dirname(__FILE__) . '/freemius/start.php';
+  
+              $fe_fs = fs_dynamic_init( array(
+                  'id'                  => '7886',
+                  'slug'                => 'front-editor',
+                  'type'                => 'plugin',
+                  'public_key'          => 'pk_721b5ebdb9cda3d26691a9fb5c35c',
+                  'is_premium'          => true,
+                  // If your plugin is a serviceware, set this option to false.
+                  'has_premium_version' => true,
+                  'has_addons'          => false,
+                  'has_paid_plans'      => true,
+                  'trial'               => array(
+                      'days'               => 7,
+                      'is_require_payment' => false,
+                  ),
+                  'menu'                => array(
+                      'slug'           => 'front_editor_settings',
+                  ),
+                  // Set the SDK to work in a sandbox mode (for development & testing).
+                  // IMPORTANT: MAKE SURE TO REMOVE SECRET KEY BEFORE DEPLOYMENT.
+                  'secret_key'          => 'sk_0c1aMUbAp.N+26}=q4q?K2-GL!3RT',
+              ) );
+          }
+  
+          return $fe_fs;
+      }
+  
+      // Init Freemius.
+      fe_fs();
+      // Signal that SDK was initiated.
+      do_action( 'fe_fs_loaded' );
+  }
 
     define('FE_PLUGIN_URL', plugins_url('', __FILE__));
     define('FE_PLUGIN_DIR_PATH', plugin_dir_path(__FILE__));
