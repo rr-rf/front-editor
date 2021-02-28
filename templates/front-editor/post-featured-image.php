@@ -1,12 +1,15 @@
 <?php 
+$thumb_id = 0;
 if (has_post_thumbnail($post_id)) {
     $thumb_id = get_post_thumbnail_id($post_id);
     $style = sprintf('style="background:url(%s)"', wp_get_attachment_url($thumb_id));
     $class = 'chosen';
     $thumb_exist = 1;
 }
-
 ?>
+<input type="hidden" name="post_image_required" value="<?= $field['required']?1:0; ?>">
+<input type="hidden" id="post_image_wp_media_uploader" name="post_image_wp_media_uploader" value="<?= $field['wp_media_uploader']?1:0; ?>">
+<input type="hidden" id="thumb_img_id" name="thumb_img_id" value="<?= $thumb_id ?? 0 ?>">
 <div class="image_loader editor-button <?= $class ?? '' ?>" thumb_exist="<?= $thumb_exist ?? 0 ?>">
     <input name="post_thumbnail" type='file' id="img_inp" accept="image/*" title="<?php echo __('Set featured image', FE_TEXT_DOMAIN); ?>"/>
     <label class="thumbnail" for="img_inp">

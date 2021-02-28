@@ -342,6 +342,30 @@ class PostFormCPT
             'query_var'           => true,
         ]);
     }
+
+    /**
+     * Get Form field settings
+     *
+     * @param [type] $name
+     * @param [type] $form_id
+     * @return void
+     */
+    public static function get_form_field_settings($name, $form_id)
+    {
+        $form_settings = json_decode(get_post_meta($form_id, 'formBuilderData', true),true);
+
+        if(empty($form_settings)){
+            return false;
+        }
+
+        foreach($form_settings as $field){
+            if($field['type'] === $name){
+                return $field;
+            }
+        }
+
+        return false;
+    }
 }
 
 PostFormCPT::init();

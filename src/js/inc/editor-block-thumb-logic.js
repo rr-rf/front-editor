@@ -38,6 +38,7 @@
         $("#img_inp").val('');
 
         $('#post_thumbnail_image').removeAttr('att-id');
+        $('#thumb_img_id').val('')
 
         document.querySelector('#bfe-editor .image_loader').setAttribute('thumb_exist', '0');
     })
@@ -46,7 +47,7 @@
     /**
      * If WP Media Uploader is enabled for post thumb image
      */
-    if (window.editor_data.editor_settings.wp_media_uploader) {
+    if (window.editor_data.post_thumb.wp_media_uploader) {
         // Uploading files
         var file_frame;
 
@@ -72,21 +73,15 @@
             file_frame.on('select', function () {
                 // We set multiple to false so only get one image from the uploader
                 var selection = file_frame.state().get('selection').first().toJSON(),
-                    post_thumbnail_image = $('#post_thumbnail_image');
+                    post_thumbnail_image = $('#post_thumbnail_image'),
+                    thumb_img_id = $('#thumb_img_id');
 
                 console.log(selection.url)
 
                 $('div.image_loader').addClass('chosen');
                 post_thumbnail_image.attr('src', selection.url);
                 post_thumbnail_image.attr('att-id', selection.id);
-
-                // var attachment_ids = selection.map(function (attachment) {
-                //     attachment = attachment.toJSON();
-                //     var array = {id:attachment.id,url:attachment.url}
-                //     return array;
-                // }).join();
-
-
+                thumb_img_id.val(selection.id)
             });
             file_frame.open();
         });

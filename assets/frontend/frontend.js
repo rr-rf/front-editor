@@ -879,8 +879,7 @@ var BfeEditor = /*#__PURE__*/function () {
           editor_block = document.querySelector('#bfe-editor'),
           post_link = document.querySelector('.view-page'),
           thumb_exist = document.querySelector('#bfe-editor .image_loader'),
-          bfe_selected_file = document.querySelector('#img_inp').files[0],
-          post_thumbnail_image_id = document.querySelector('#post_thumbnail_image').getAttribute('att-id');
+          bfe_selected_file = document.querySelector('#img_inp').files[0];
       var formData = new FormData();
       var formArray = $('#bfe-editor').serializeArray(),
           formArray_data = this.objectifyForm(formArray);
@@ -890,7 +889,7 @@ var BfeEditor = /*#__PURE__*/function () {
        */
 
       if (bfe_selected_file) {
-        formArray_data.image = 'bfe_selected_file';
+        formArray_data.image = bfe_selected_file;
       }
       /**
        * Sending exist or not post image to understand delete or not it from post
@@ -919,14 +918,6 @@ var BfeEditor = /*#__PURE__*/function () {
           formArray_data[name] = 'null';
         }
       });
-      /**
-       * If wp media uploader is enabled
-       */
-
-      if (this.bfee_data.editor_settings.wp_media_uploader && post_thumbnail_image_id) {
-        formArray_data.thumb_img_id = post_thumbnail_image_id;
-      }
-
       formArray_data.editor_data = JSON.stringify(data);
       save_button.innerHTML = save_button_messages.updating;
       save_button.disabled = true;
@@ -1452,13 +1443,14 @@ var WPImage = /*#__PURE__*/function () {
     $('div.image_loader').removeClass('chosen');
     $("#img_inp").val('');
     $('#post_thumbnail_image').removeAttr('att-id');
+    $('#thumb_img_id').val('');
     document.querySelector('#bfe-editor .image_loader').setAttribute('thumb_exist', '0');
   });
   /**
    * If WP Media Uploader is enabled for post thumb image
    */
 
-  if (window.editor_data.editor_settings.wp_media_uploader) {
+  if (window.editor_data.post_thumb.wp_media_uploader) {
     // Uploading files
     var file_frame;
     $('.image_loader input').on('click', function (event) {
@@ -1482,15 +1474,13 @@ var WPImage = /*#__PURE__*/function () {
       file_frame.on('select', function () {
         // We set multiple to false so only get one image from the uploader
         var selection = file_frame.state().get('selection').first().toJSON(),
-            post_thumbnail_image = $('#post_thumbnail_image');
+            post_thumbnail_image = $('#post_thumbnail_image'),
+            thumb_img_id = $('#thumb_img_id');
         console.log(selection.url);
         $('div.image_loader').addClass('chosen');
         post_thumbnail_image.attr('src', selection.url);
-        post_thumbnail_image.attr('att-id', selection.id); // var attachment_ids = selection.map(function (attachment) {
-        //     attachment = attachment.toJSON();
-        //     var array = {id:attachment.id,url:attachment.url}
-        //     return array;
-        // }).join();
+        post_thumbnail_image.attr('att-id', selection.id);
+        thumb_img_id.val(selection.id);
       });
       file_frame.open();
     });

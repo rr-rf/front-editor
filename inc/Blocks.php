@@ -21,14 +21,7 @@ class Block
         add_action('init', [__CLASS__, 'gutenberg_add_editor_block']);
         add_action('enqueue_block_editor_assets', [__CLASS__, 'gutenberg_editor_block_editor_scripts']);
         
-         // category selection addon
-        add_action('bfe_editor_sub_header_parts_form', [__CLASS__, 'category_select'], 13, 2);
-        add_filter('bfe_ajax_before_front_editor_post_update_or_creation', [__CLASS__, 'add_category_on_save_and_check'], 10, 3);
-
-        // tag selection addon
-        add_action('bfe_editor_sub_header_parts_form', [__CLASS__, 'tag_select'], 13, 2);
-        add_filter('bfe_ajax_before_front_editor_post_update_or_creation', [__CLASS__, 'add_tag_on_save_and_check'], 10, 3);
-    }
+         }
 
     /**
      * Gutenberg block scripts
@@ -159,36 +152,6 @@ class Block
     }
 
     /**
-     * Image check
-     *
-     * @param [type] $post_data
-     * @param [type] $data
-     * @param [type] $file
-     * @return void
-     */
-    public static function image_on_save_check($post_data, $data, $file)
-    {
-
-        $settings = get_post_meta($_POST['editor_post_id'], 'save_editor_attributes_to_meta', 1);
-        $post_image = sanitize_text_field($settings['post_image']);
-        $is_featured_image_exist = $_POST['thumb_exist'] ?? 0;
-
-        if ($post_image === 'disable') {
-            return $post_data;
-        }
-
-        if ($is_featured_image_exist) {
-            return $post_data;
-        }
-
-        if ($post_image === 'require' && empty($_FILES['image']) && empty($_POST['thumb_img_id'])) {
-            wp_send_json_error(['message' => __('The featured image is required', FE_TEXT_DOMAIN)]);
-        }
-
-        return $post_data;
-    }
-
-    /**
      * Category selector template
      *
      * @return void
@@ -204,65 +167,6 @@ class Block
 
         require FE_Template_PATH . 'front-editor/category.php';
     }
-
-
-    /**
-     * Category selection on post saving actions;
-     *
-     * @param [type] $post_data
-     * @param [type] $data
-     * @param [type] $file
-     * @return void
-     */
-    public static function add_category_on_save_and_check($post_data, $data, $file)
-    {
-        if (empty($_POST['category'])) {
-            return $post_data;
-        }
-
-        $settings = get_post_meta($_POST['editor_post_id'], 'save_editor_attributes_to_meta', 1);
-        $post_category_settings = sanitize_text_field($settings['post_category']);
-        $post_category_val = sanitize_text_field($_POST['category']);
-        $post_id = intval(sanitize_text_field($_POST['post_id']));
-
-        if ($post_category_settings === 'disable') {
-            return $post_data;
-        }
-
-        if ($post_category_settings === 'require' && empty($post_category_val)) {
-            wp_send_json_error(['message' => __('The category selection is required', FE_TEXT_DOMAIN)]);
-        }
-
-        if ($post_category_val === 'null') {
-            if ($post_id) {
-                wp_delete_object_term_relationships($post_id, 'category');
-            }
-        }
-
-        if (!empty($post_category_val) && $post_category_val !== 'null') {
-            $post_data['post_category'] = explode(",", $post_category_val);
-        }
-
-        return $post_data;
-    }
-
-    /**
-     * Category tag template
-     *
-     * @return void
-     */
-    public static function tag_select($post_id, $attributes)
-    {
-        $settings = get_post_meta(get_the_ID(), 'save_editor_attributes_to_meta', 1);
-        $post_tags = sanitize_text_field($settings['post_tags']);
-
-        if ($post_tags === 'disable') {
-            return;
-        }
-
-        require FE_Template_PATH . 'front-editor/tags.php';
-    }
-
 
     /**
      * Tag selection on post saving actions;

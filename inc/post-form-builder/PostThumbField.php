@@ -8,6 +8,8 @@
 
 namespace BFE\Field;
 
+use BFE\PostFormCPT;
+
 defined('ABSPATH') || exit;
 
 
@@ -27,9 +29,15 @@ class PostThumbField
         /**
          * Activating pro fields components activation
          */
-        //add_filter('bfe_front_editor_localize_data', [__CLASS__, 'adding_pro_version_settings'], 11, 2);
+        add_filter('bfe_front_editor_localize_data', [__CLASS__, 'field_setting_for_frontend'], 10, 3);
     }
 
+    /**
+     * This settings for wp admin form builder
+     *
+     * @param [type] $data
+     * @return void
+     */
     public static function add_field_settings($data)
     {
         $field_label = __(self::$field_label, FE_TEXT_DOMAIN);
@@ -128,11 +136,28 @@ class PostThumbField
             return $post_data;
         }
 
-        if ($post_image === 'require' && empty($_FILES['image']) && empty($_POST['thumb_img_id'])) {
+        if ($_POST['post_image_required'] && empty($_FILES['image']) && empty($_POST['thumb_img_id'])) {
             wp_send_json_error(['message' => __('The featured image is required', FE_TEXT_DOMAIN)]);
         }
 
         return $post_data;
+    }
+
+    /**
+     * Localize settings for form in front
+     *
+     * @param [type] $data
+     * @param [type] $attributes
+     * @param [type] $post_id
+     * @return void
+     */
+    public static function field_setting_for_frontend($data, $attributes, $post_id)
+    {
+        $settings = PostFormCPT::get_form_field_settings(self::$field_type,$attributes['id']);
+
+        $data['post_thumb']['wp_media_uploader'] = isset($settings['wp_media_uploader'])?sanitize_text_field($settings['wp_media_uploader']):0;
+
+        return $data;
     }
 }
 

@@ -131,7 +131,7 @@ class Editor
 		/**
 		 * Activating wp media uploader
 		 */
-		if ($wp_localize_data['editor_settings']['wp_media_uploader']) {
+		if ($wp_localize_data['post_thumb']['wp_media_uploader'] || $wp_localize_data['editor_settings']['wp_media_uploader']) {
 			wp_enqueue_media();
 		}
 

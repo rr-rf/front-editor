@@ -163,10 +163,6 @@ class TaxonomiesFields
                     wp_delete_object_term_relationships($post_id, $tax_name);
                 }
             }
-
-            // if (!empty($settings['ids']) && $settings['ids'] !== 'null') {
-            //     $post_data['post_category'] = explode(",", $settings['ids']);
-            // }
         }
 
         return $post_data;
@@ -199,7 +195,7 @@ class TaxonomiesFields
                     if (!$term_data) {
                         $term_data = get_term_by('name', $term, $tax_name);
                     }
-                    
+
                     if (!$term_data) {
                         $term_data = wp_insert_term(
                             $term,
