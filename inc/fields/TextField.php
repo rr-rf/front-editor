@@ -22,9 +22,10 @@ class TextField
     {
         add_filter('admin_post_form_formBuilder_settings', [__CLASS__, 'add_field_settings']);
 
-        add_action('bfe_editor_on_front_field_adding', [__CLASS__, 'add_field_to_front_form'], 10, 3);
-
-        add_action('bfe_ajax_after_front_editor_post_update_or_creation', [__CLASS__, 'save_field_to_front_form'], 10);
+        if (fe_fs()->is__premium_only()) {
+            add_action('bfe_editor_on_front_field_adding', [__CLASS__, 'add_field_to_front_form'], 10, 3);
+            add_action('bfe_ajax_after_front_editor_post_update_or_creation', [__CLASS__, 'save_field_to_front_form'], 10);
+        }
     }
 
     /**
@@ -35,7 +36,9 @@ class TextField
      */
     public static function add_field_settings($data)
     {
-        $field_label = __(self::$field_label, FE_TEXT_DOMAIN);
+        if (!fe_fs()->is__premium_only()) {
+            $data['formBuilder_options']['disableFields'][] = 'text';
+        }
 
         return $data;
     }
@@ -65,12 +68,12 @@ class TextField
      */
     public static function save_field_to_front_form($post_id)
     {
-        if(!isset($_POST['text_fields'])){
+        if (!isset($_POST['text_fields'])) {
             return;
         }
 
         foreach ($_POST['text_fields'] as $name => $value) {
-                update_post_meta($post_id, $name, $value);
+            update_post_meta($post_id, $name, $value);
         }
     }
 }

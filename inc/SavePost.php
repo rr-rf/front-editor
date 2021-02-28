@@ -130,8 +130,11 @@ class SavePost
 			'post_content' => $content_html,
 		);
 
+		if (fe_fs()->is__premium_only()) {
+			$post_data['post_type'] = isset($_POST['fe_post_type']) ? sanitize_text_field($_POST['fe_post_type']) : 'post';
+		}
 		$post_data['post_status'] = isset($_POST['fe_post_status']) ? sanitize_text_field($_POST['fe_post_status']) : 'publish';
-		$post_data['post_type'] = isset($_POST['fe_post_type']) ? sanitize_text_field($_POST['fe_post_type']) : 'post';
+
 
 		/**
 		 * Before post creation or update

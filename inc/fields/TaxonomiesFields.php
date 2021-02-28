@@ -118,6 +118,11 @@ class TaxonomiesFields
                     'access',
                     'value',
                 ];
+
+                if (!fe_fs()->is__premium_only()) {
+                    $data['formBuilder_options']['disable_attr'][] = '.fld-multiple';
+                    $data['formBuilder_options']['disable_attr'][] = '.fld-add_new';
+                }
         }
 
 

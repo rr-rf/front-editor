@@ -34,7 +34,6 @@ $form_settings = get_post_meta($post_ID, 'fe_form_settings', true);
             <span><?= __('Select post type', FE_TEXT_DOMAIN) ?></span>
             <select name="settings[fe_post_type]" id="fe_settings_post_type">
                 <?php
-
                 $post_types = get_post_types();
                 $post_type_selected    = isset($form_settings['fe_post_type']) ? $form_settings['fe_post_type'] : 'post';
                 unset($post_types['attachment']);
@@ -52,7 +51,12 @@ $form_settings = get_post_meta($post_ID, 'fe_form_settings', true);
                 unset($post_types['wp_block']);
 
                 foreach ($post_types as $post_type) {
-                    printf('<option value="%s"%s>%s</option>', esc_attr($post_type), esc_attr(selected($post_type_selected, $post_type, false)), esc_html($post_type));
+                    $post_type_name = $post_type;
+                    if (!fe_fs()->is__premium_only()) {
+                        $disabled = $post_type !== 'post'? 'disabled':'';
+                        $post_type_name = $post_type !== 'post'?$post_type. ' (PRO)':$post_type;
+                    }
+                    printf('<option value="%s" %s %s>%s</option>', esc_attr($post_type),$disabled, esc_attr(selected($post_type_selected, $post_type, false)), esc_html($post_type_name));
                 }; ?>
             </select>
             <div class="formBuilder-wrapper">

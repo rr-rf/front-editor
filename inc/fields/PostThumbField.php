@@ -89,6 +89,8 @@ class PostThumbField
          */
         $data['formBuilder_options']['controls_group']['post_fields']['types'][] = self::$field_type;
 
+        $data['formBuilder_options']['disabledFieldButtons'][self::$field_type] = ['copy'];
+
         /**
          * Disabling default settings
          */
@@ -153,9 +155,9 @@ class PostThumbField
      */
     public static function field_setting_for_frontend($data, $attributes, $post_id)
     {
-        $settings = PostFormCPT::get_form_field_settings(self::$field_type,$attributes['id']);
+        $settings = PostFormCPT::get_form_field_settings(self::$field_type, $attributes['id']);
 
-        $data['post_thumb']['wp_media_uploader'] = isset($settings['wp_media_uploader'])?sanitize_text_field($settings['wp_media_uploader']):0;
+        $data['post_thumb']['wp_media_uploader'] = isset($settings['wp_media_uploader']) ? sanitize_text_field($settings['wp_media_uploader']) : 0;
 
         return $data;
     }

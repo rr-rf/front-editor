@@ -40,10 +40,11 @@ class EditorJsField
      * @param [type] $data
      * @return void
      */
-    public static function validate_field_before_wp_admin_form_save($data){
+    public static function validate_field_before_wp_admin_form_save($data)
+    {
         $settings = PostFormCPT::get_form_field_settings(self::$field_type, 0, $_POST['formBuilderData']);
 
-        if(!$settings){
+        if (!$settings) {
             wp_send_json_success([
                 'message' => [
                     'title' => __('Oops', FE_TEXT_DOMAIN),
@@ -171,9 +172,13 @@ class EditorJsField
         /**
          * Disable attr if there is no pro version
          */
-        $data['formBuilder_options']['disable_attr'][] = '.fld-editor_gallery_plugin';
-        $data['formBuilder_options']['disable_attr'][] = '.fld-editor_table_plugin';
-        $data['formBuilder_options']['disable_attr'][] = '.fld-editor_warning_plugin';
+        $is_premium = fe_fs()->is__premium_only();
+        if (!$is_premium) {
+            $data['formBuilder_options']['disable_attr'][] = '.fld-editor_gallery_plugin';
+            $data['formBuilder_options']['disable_attr'][] = '.fld-editor_table_plugin';
+            $data['formBuilder_options']['disable_attr'][] = 'fld-editor_warning_plugin';
+        }
+
 
         /**
          * Disabling default settings
@@ -228,7 +233,7 @@ class EditorJsField
         }
 
         if (is_array($settings) && !empty($settings)) {
-            foreach($settings as $name => $value){
+            foreach ($settings as $name => $value) {
                 $data['editor_settings'][$name] = $value;
             }
         }
