@@ -283,7 +283,7 @@ export default class BfeEditor {
                         shortcut: 'CMD+SHIFT+H'
                     }
                 }),
-                ...(editor_settings.wp_media_uploader && {
+                ...(editor_settings.editor_gallery_plugin && {
                     wpImageGallery: {
                         class: WPImage,
                         inlineToolbar: true,

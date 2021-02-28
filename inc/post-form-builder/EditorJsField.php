@@ -8,6 +8,8 @@
 
 namespace BFE\Field;
 
+use BFE\PostFormCPT;
+
 defined('ABSPATH') || exit;
 
 
@@ -160,7 +162,7 @@ class EditorJsField
                 'value',
             ];
 
-            $data['formBuilder_options']['disabledFieldButtons'][self::$field_type] = ['copy'];
+        $data['formBuilder_options']['disabledFieldButtons'][self::$field_type] = ['copy'];
 
         return $data;
     }
@@ -175,24 +177,35 @@ class EditorJsField
      */
     public static function field_setting_for_frontend($data, $attributes, $post_id)
     {
-        $data['editor_settings'] = [
-            'editor_image_plugin' => $attributes['editor_image_plugin'] ?? true,
-            'editor_header_plugin' => $attributes['editor_header_plugin'] ?? true,
-            'editor_embed_plugin' => $attributes['editor_embed_plugin'] ?? true,
-            'editor_list_plugin' => $attributes['editor_list_plugin'] ?? true,
-            'editor_checklist_plugin' => $attributes['editor_checklist_plugin'] ?? true,
-            'editor_quote_plugin' => $attributes['editor_quote_plugin'] ?? true,
-            'editor_marker_plugin' => $attributes['editor_marker_plugin'] ?? true,
-            'editor_code_plugin' => $attributes['editor_code_plugin'] ?? true,
-            'editor_delimiter_plugin' => $attributes['editor_delimiter_plugin'] ?? true,
-            'editor_inlineCode_plugin' => $attributes['editor_inlineCode_plugin'] ?? true,
-            'editor_linkTool_plugin' => $attributes['editor_linkTool_plugin'] ?? true,
-            'tags_add_new' => $attributes['tags_add_new'] ?? false,
-            'wp_media_uploader' => false, // pro
-            'editor_warning_plugin' => false, // pro
-            'editor_table_plugin' => false, // pro
-            'editor_gallery_plugin' => false, // pro
-        ];
+        $settings = PostFormCPT::get_form_field_settings(self::$field_type, $attributes['id']);
+
+        if (empty($settings)) {
+            $data['editor_settings'] = [
+                'editor_image_plugin' => $attributes['editor_image_plugin'] ?? true,
+                'editor_header_plugin' => $attributes['editor_header_plugin'] ?? true,
+                'editor_embed_plugin' => $attributes['editor_embed_plugin'] ?? true,
+                'editor_list_plugin' => $attributes['editor_list_plugin'] ?? true,
+                'editor_checklist_plugin' => $attributes['editor_checklist_plugin'] ?? true,
+                'editor_quote_plugin' => $attributes['editor_quote_plugin'] ?? true,
+                'editor_marker_plugin' => $attributes['editor_marker_plugin'] ?? true,
+                'editor_code_plugin' => $attributes['editor_code_plugin'] ?? true,
+                'editor_delimiter_plugin' => $attributes['editor_delimiter_plugin'] ?? true,
+                'editor_inlineCode_plugin' => $attributes['editor_inlineCode_plugin'] ?? true,
+                'editor_linkTool_plugin' => $attributes['editor_linkTool_plugin'] ?? true,
+                'tags_add_new' => $attributes['tags_add_new'] ?? false,
+                'wp_media_uploader' => false, // pro
+                'editor_warning_plugin' => false, // pro
+                'editor_table_plugin' => false, // pro
+                'editor_gallery_plugin' => false, // pro
+            ];
+        }
+
+        if (is_array($settings) && !empty($settings)) {
+            foreach($settings as $name => $value){
+                $data['editor_settings'][$name] = $value;
+            }
+        }
+
 
         $data['translations']['i18n'] = [
             'messages' => [

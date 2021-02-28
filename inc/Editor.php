@@ -58,6 +58,7 @@ class Editor
 		$button_text   = __('Publish', FE_TEXT_DOMAIN);
 		$html_content  = '';
 		$new_post_link = self::get_editor_page_link();
+		$attributes['id'] = $attributes['id']? (int) sanitize_text_field($attributes['id']):0;
 
 		update_post_meta(get_the_ID(), 'save_editor_attributes_to_meta', [
 			'editor_post_status' => $attributes['editor_post_status'] ?? 'pending',
@@ -131,7 +132,7 @@ class Editor
 		/**
 		 * Activating wp media uploader
 		 */
-		if ($wp_localize_data['post_thumb']['wp_media_uploader'] || $wp_localize_data['editor_settings']['wp_media_uploader']) {
+		if ($wp_localize_data['post_thumb']['wp_media_uploader'] || $wp_localize_data['editor_settings']['editor_gallery_plugin']) {
 			wp_enqueue_media();
 		}
 

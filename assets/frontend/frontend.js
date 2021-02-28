@@ -1036,7 +1036,7 @@ var BfeEditor = /*#__PURE__*/function () {
             },
             shortcut: 'CMD+SHIFT+H'
           }
-        }), editor_settings.wp_media_uploader && {
+        }), editor_settings.editor_gallery_plugin && {
           wpImageGallery: {
             class: _class_wp_image__WEBPACK_IMPORTED_MODULE_18__["default"],
             inlineToolbar: true,

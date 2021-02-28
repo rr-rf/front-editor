@@ -73,7 +73,7 @@ class PostThumbField
         $data['formBuilder_options']['typeUserAttrs'][self::$field_type] =
             [
                 'wp_media_uploader' => [
-                    'label' => __('WP Media Uploader (PRO)', FE_TEXT_DOMAIN),
+                    'label' => __('(PRO) WP Media', FE_TEXT_DOMAIN),
                     'value' => false,
                     'type' => 'checkbox',
                 ]
