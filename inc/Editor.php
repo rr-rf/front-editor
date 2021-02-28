@@ -79,7 +79,10 @@ class Editor
 		if (!self::can_edit_post(0, $post_id)) {
 			return sprintf('<h2>%s</h2>', __('You do not have permission to edit this post', FE_TEXT_DOMAIN));
 		}
-		
+
+		/**
+		 * If users have not selected the form
+		 */
 		if (!$attributes['id']) {
 			return sprintf(
 				'<h2>%s <a href="%s">%s</a></h2>',
