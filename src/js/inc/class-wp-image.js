@@ -37,7 +37,6 @@ export default class WPImage {
 
         const wp_image_wrap = this.wrapper;
 
-        console.log(this.data)
         /**
          * If data already exist
          */
@@ -109,7 +108,6 @@ export default class WPImage {
             };
         });
 
-        console.log(attachments);
         return attachments;
     }
 }

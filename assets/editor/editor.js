@@ -3898,6 +3898,12 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
   // Make plugin menu active if we in editing page
   $('li.wp-has-current-submenu').removeClass('wp-has-current-submenu');
   $('li.toplevel_page_front_editor_settings').addClass('wp-has-current-submenu');
+  $('.nav-tab').click(function (ev) {
+    $('.nav-tab').removeClass('nav-tab-active');
+    $('.group').removeClass('active');
+    $(ev.target).addClass('nav-tab-active');
+    $($(ev.target).attr('href')).addClass('active');
+  });
   var localizeData = window.fe_post_form_data,
       admin_form_builder_nonce = $('#admin_form_builder_nonce').val(),
       formBuilderContainer = false,
@@ -3945,6 +3951,12 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
   function updateFormBuilder() {
     var post_type = $('#fe_settings_post_type').val();
+
+    if (post_type) {
+      Swal.fire('');
+      Swal.showLoading();
+    }
+
     wp.ajax.send('fe_get_formBuilder_data', {
       data: {
         post_id: localizeData.post_id,
@@ -3987,6 +3999,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
           formBuilderOptions.disable_attr.map(function (val) {
             $(document).find(val).prop('disabled', true);
           });
+          Swal.close();
         });
       },
       error: function error(_error) {
@@ -4002,6 +4015,8 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
   function save_form_data() {
     var formArray = $('#fe-fromBuilder').serializeArray(),
         data = objectifyForm(formArray);
+    Swal.fire('');
+    Swal.showLoading();
     data.formBuilderData = formBuilderContainer.actions.getData('json', true);
     data.action = 'save_post_front_settings';
     console.log(data);
@@ -4009,7 +4024,11 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
       data: data,
       success: function success(response) {
         var message = response.message;
-        $('#post_id').val(response.post_id);
+
+        if (response.post_id) {
+          $('#post_id').val(response.post_id);
+        }
+
         Swal.fire(message.title, message.message, message.status);
       },
       error: function error(_error2) {

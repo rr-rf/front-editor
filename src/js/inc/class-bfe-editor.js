@@ -112,7 +112,6 @@ export default class BfeEditor {
             let element_val = $(element).val(),
                 selected_element = element_val.toString(),
                 name = $(element).attr('name');
-                console.log(name)
             if (element_val) {
                 formArray_data[name] = selected_element;
             } else {
@@ -129,9 +128,7 @@ export default class BfeEditor {
             formData.append(key, formArray_data[key]);
         }
 
-        console.log(formArray_data);
-
-        fetch(BfeEditor.get_bfee_data.ajax_url, {
+         fetch(BfeEditor.get_bfee_data.ajax_url, {
             method: 'POST',
             body: formData
         })

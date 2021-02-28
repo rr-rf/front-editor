@@ -215,6 +215,8 @@ class PostFormCPT
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
             return;
 
+        do_action('fe_before_wp_admin_form_create_save',$_POST);
+
         $title = isset($_POST['fe_title']) ? $_POST['fe_title'] : __('Sample Form', FE_TEXT_DOMAIN);
         if (!empty($_POST['post_id']) && $_POST['post_id'] !== 'new') {
             $post_ID = intval(sanitize_text_field($_POST['post_id']));
@@ -233,9 +235,17 @@ class PostFormCPT
         /**
          * Saving data
          */
-        if (!empty($_POST['formBuilderData'])) {
-            update_post_meta($post_ID, 'formBuilderData', $_POST['formBuilderData']);
+        if (empty(json_decode(stripslashes($_POST['formBuilderData']),true))) {
+            wp_send_json_success([
+                'post_id' => $post_ID,
+                'message' => [
+                    'title' => __('Oops', FE_TEXT_DOMAIN),
+                    'message' => __('From builder cannot be empty', FE_TEXT_DOMAIN),
+                    'status' => 'warning'
+                ]
+            ]);
         }
+        update_post_meta($post_ID, 'formBuilderData', $_POST['formBuilderData']);
 
         /**
          * Adding all settings to meta fields
@@ -350,12 +360,18 @@ class PostFormCPT
      * @param [type] $form_id
      * @return void
      */
-    public static function get_form_field_settings($name, $form_id)
+    public static function get_form_field_settings($name, $form_id = 0, $form_settings = [])
     {
-        $form_settings = json_decode(get_post_meta($form_id, 'formBuilderData', true),true);
-
+        if(empty($form_settings)){
+            $form_settings = json_decode(get_post_meta($form_id, 'formBuilderData', true),true);
+        }
+        
         if(empty($form_settings)){
             return false;
+        }
+
+        if(!empty($form_settings)){
+            $form_settings = json_decode(stripslashes($_POST['formBuilderData']),true);
         }
 
         foreach($form_settings as $field){

@@ -8,6 +8,8 @@
 
 namespace BFE\Field;
 
+use BFE\PostFormCPT;
+
 defined('ABSPATH') || exit;
 
 
@@ -19,6 +21,32 @@ class PostTitleField
     public static function init()
     {
         add_filter('admin_post_form_formBuilder_settings', [__CLASS__, 'add_field_settings']);
+
+        /**
+         * Validate field on wp admin form save
+         */
+        add_action('fe_before_wp_admin_form_create_save', [__CLASS__, 'validate_field_before_wp_admin_form_save']);
+   
+    }
+
+    /**
+     * Validate field on wp admin form save
+     *
+     * @param [type] $data
+     * @return void
+     */
+    public static function validate_field_before_wp_admin_form_save($data){
+        $settings = PostFormCPT::get_form_field_settings(self::$field_type, 0, $_POST['formBuilderData']);
+
+        if(!$settings){
+            wp_send_json_success([
+                'message' => [
+                    'title' => __('Oops', FE_TEXT_DOMAIN),
+                    'message' => __('Post Title Field is missing', FE_TEXT_DOMAIN),
+                    'status' => 'warning'
+                ]
+            ]);
+        }
     }
 
     public static function add_field_settings($data)

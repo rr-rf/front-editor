@@ -105,13 +105,16 @@ if ($("#bfe-editor-block")[0]) {
     /**
      * on title click open caret to fist block
      */
-    post_title.addEventListener("keyup", (event) => {
-        if (event.keyCode === 13) {
-            // Adding caret to fist block
-            bfe_page_editor.bfee_editor.caret.focus();
-            bfe_page_editor.bfee_editor.toolbar.open();
-        }
-    });
+    if (post_title) {
+        post_title.addEventListener("keyup", (event) => {
+            if (event.keyCode === 13) {
+                // Adding caret to fist block
+                bfe_page_editor.bfee_editor.caret.focus();
+                bfe_page_editor.bfee_editor.toolbar.open();
+            }
+        });
+    }
+
 
     /**
      * Saving example

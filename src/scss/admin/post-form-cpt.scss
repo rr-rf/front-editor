@@ -1,35 +1,14 @@
 #fe-fromBuilder {
-    #postbox-container-1 {
-        position: fixed;
-        left: 180px;
-        bottom: 0;
-        margin: 0 !important;
-        float: inherit;
-        z-index: 2;
-        //display: none;
-        #side-sortables {
-            min-height: auto;
+    .group {
+        display: none;
+        &.active {
+            display: block;
         }
-        .postbox-header {
-            display: none;
-        }
-        #minor-publishing {
-            display: none;
-        }
-    }
-    #poststuff {
-        margin: 0;
-        #post-body {
-            margin: 0;
-        }
-        #front_editor_metabox {
-            border: 0;
-            background-color: transparent;
-            .postbox-header {
-                display: none;
-            }
-            .inside {
-                padding: 0;
+        .setting {
+            margin: 10px;
+            span {
+                display: block;
+                margin-bottom: 5px;
             }
         }
     }

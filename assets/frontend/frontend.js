@@ -687,16 +687,19 @@ if ($("#bfe-editor-block")[0]) {
    * on title click open caret to fist block
    */
 
-  post_title.addEventListener("keyup", function (event) {
-    if (event.keyCode === 13) {
-      // Adding caret to fist block
-      bfe_page_editor.bfee_editor.caret.focus();
-      bfe_page_editor.bfee_editor.toolbar.open();
-    }
-  });
+  if (post_title) {
+    post_title.addEventListener("keyup", function (event) {
+      if (event.keyCode === 13) {
+        // Adding caret to fist block
+        bfe_page_editor.bfee_editor.caret.focus();
+        bfe_page_editor.bfee_editor.toolbar.open();
+      }
+    });
+  }
   /**
    * Saving example
    */
+
 
   saveButton.addEventListener('click', function (ev) {
     ev.preventDefault();
@@ -910,7 +913,6 @@ var BfeEditor = /*#__PURE__*/function () {
         var element_val = $(element).val(),
             selected_element = element_val.toString(),
             name = $(element).attr('name');
-        console.log(name);
 
         if (element_val) {
           formArray_data[name] = selected_element;
@@ -926,7 +928,6 @@ var BfeEditor = /*#__PURE__*/function () {
         formData.append(key, formArray_data[key]);
       }
 
-      console.log(formArray_data);
       fetch(BfeEditor.get_bfee_data.ajax_url, {
         method: 'POST',
         body: formData
@@ -1321,7 +1322,6 @@ var WPImage = /*#__PURE__*/function () {
 
       var $ = window.jQuery;
       var wp_image_wrap = this.wrapper;
-      console.log(this.data);
       /**
        * If data already exist
        */
@@ -1390,7 +1390,6 @@ var WPImage = /*#__PURE__*/function () {
           _map2 = _babel_runtime_helpers_toArray__WEBPACK_IMPORTED_MODULE_1___default()(_map),
           attachments = _map2.slice(0);
 
-      console.log(attachments);
       return attachments;
     }
   }]);

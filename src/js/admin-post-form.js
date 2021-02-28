@@ -3,6 +3,14 @@ export default ($, Swal) => {
     $('li.wp-has-current-submenu').removeClass('wp-has-current-submenu')
     $('li.toplevel_page_front_editor_settings').addClass('wp-has-current-submenu')
 
+    $('.nav-tab').click((ev) => {
+        $('.nav-tab').removeClass('nav-tab-active')
+        $('.group').removeClass('active')
+
+        $(ev.target).addClass('nav-tab-active')
+        $($(ev.target).attr('href')).addClass('active')
+    });
+
 
     let localizeData = window.fe_post_form_data,
         admin_form_builder_nonce = $('#admin_form_builder_nonce').val(),
@@ -59,6 +67,11 @@ export default ($, Swal) => {
      */
     function updateFormBuilder() {
         let post_type = $('#fe_settings_post_type').val();
+
+        if (post_type) {
+            Swal.fire('')
+            Swal.showLoading()
+        }
         wp.ajax.send('fe_get_formBuilder_data', {
             data: {
                 post_id: localizeData.post_id,
@@ -108,6 +121,8 @@ export default ($, Swal) => {
                     formBuilderOptions.disable_attr.map((val) => {
                         $(document).find(val).prop('disabled', true)
                     });
+
+                    Swal.close()
                 });
             },
             error: function (error) {
@@ -124,6 +139,9 @@ export default ($, Swal) => {
         var formArray = $('#fe-fromBuilder').serializeArray(),
             data = objectifyForm(formArray);
 
+        Swal.fire('')
+        Swal.showLoading()
+
         data.formBuilderData = formBuilderContainer.actions.getData('json', true);
         data.action = 'save_post_front_settings';
 
@@ -132,7 +150,9 @@ export default ($, Swal) => {
             data: data,
             success: function (response) {
                 let message = response.message;
-                $('#post_id').val(response.post_id)
+                if (response.post_id) {
+                    $('#post_id').val(response.post_id)
+                }
                 Swal.fire(message.title, message.message, message.status);
             },
             error: function (error) {

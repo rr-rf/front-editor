@@ -26,7 +26,34 @@ class EditorJsField
         add_filter('admin_post_form_formBuilder_settings', [__CLASS__, 'add_field_settings']);
 
         add_filter('bfe_front_editor_localize_data', [__CLASS__, 'field_setting_for_frontend'], 10, 3);
+
+        /**
+         * Validate field on wp admin form save
+         */
+        add_action('fe_before_wp_admin_form_create_save', [__CLASS__, 'validate_field_before_wp_admin_form_save']);
     }
+
+
+    /**
+     * Validate field on wp admin form save
+     *
+     * @param [type] $data
+     * @return void
+     */
+    public static function validate_field_before_wp_admin_form_save($data){
+        $settings = PostFormCPT::get_form_field_settings(self::$field_type, 0, $_POST['formBuilderData']);
+
+        if(!$settings){
+            wp_send_json_success([
+                'message' => [
+                    'title' => __('Oops', FE_TEXT_DOMAIN),
+                    'message' => __('Post Content Field is missing', FE_TEXT_DOMAIN),
+                    'status' => 'warning'
+                ]
+            ]);
+        }
+    }
+
     /**
      * Adding setting to admin
      */
@@ -47,7 +74,8 @@ class EditorJsField
         $data['formBuilder_options']['temp_back'][self::$field_type] = [
             'field' => sprintf('<div class="%s editor" name="%s"></div>', self::$field_type, self::$field_type),
             'onRender' => '',
-            'max_in_form' => 1
+            'max_in_form' => 1,
+            'required' => 1
         ];
 
         /**

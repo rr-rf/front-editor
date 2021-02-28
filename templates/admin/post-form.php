@@ -52,26 +52,37 @@
                     printf('<option value="%s"%s>%s</option>', esc_attr($post_type), esc_attr(selected($post_type_selected, $post_type, false)), esc_html($post_type));
                 }; ?>
             </select>
-            <span><?= __('Post Status', FE_TEXT_DOMAIN) ?></span>
-            <select name="settings[fe_post_status]" id="fe_settings_post_status">
-                <?php
-                $post_statuses = [
-                    'publish' => __('Publish', FE_TEXT_DOMAIN),
-                    'pending' => __('Pending', FE_TEXT_DOMAIN)
-                ];
-
-                $post_status_selected    = get_post_meta($post_ID, 'fe_post_status', true) ? get_post_meta($post_ID, 'fe_post_status', true) : 'publish';
-
-                foreach ($post_statuses as $status => $label) {
-                    printf('<option value="%s"%s>%s</option>', esc_attr($status), esc_attr(selected($post_status_selected, $status, false)), esc_html($label));
-                }; ?>
-            </select>
             <div class="formBuilder-wrapper">
                 <div id="form-builder"></div>
             </div>
         </div>
 
         <div id="post-form-settings" class="group  clearfix">
+            <h3><?= __('Settings', FE_TEXT_DOMAIN) ?></h3>
+            <div class="setting">
+                <span><?= __('Post Status', FE_TEXT_DOMAIN) ?></span>
+                <select name="settings[fe_post_status]" id="fe_settings_post_status">
+                    <?php
+                    $post_statuses = [
+                        'publish' => __('Publish', FE_TEXT_DOMAIN),
+                        'pending' => __('Pending', FE_TEXT_DOMAIN)
+                    ];
+
+                    $post_status_selected    = get_post_meta($post_ID, 'fe_post_status', true) ? get_post_meta($post_ID, 'fe_post_status', true) : 'publish';
+
+                    foreach ($post_statuses as $status => $label) {
+                        printf('<option value="%s"%s>%s</option>', esc_attr($status), esc_attr(selected($post_status_selected, $status, false)), esc_html($label));
+                    }; ?>
+                </select>
+            </div>
+            <div class="setting">
+                <span><?= __('Add new button', FE_TEXT_DOMAIN) ?></span>
+                <select class="components-select-control__input css-1kus6y6-Select e12x0a390" id="inspector-select-control-4">
+                    <option value="display">Display</option>
+                    <option value="always_display">Always display</option>
+                    <option value="disable">Disable this field</option>
+                </select>
+            </div>
         </div>
     </div>
 
