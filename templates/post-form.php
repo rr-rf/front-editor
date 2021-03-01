@@ -1,6 +1,5 @@
 <?php
 $fields_list = json_decode(get_post_meta($attributes['id'], 'formBuilderData', true), true);
-$form_settings = get_post_meta($attributes['id'], 'fe_form_settings', true);
 $form_id = $attributes['id'] ?? 0;
 ?>
 <form class="bfe-editor" id="bfe-editor">

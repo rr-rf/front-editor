@@ -54,10 +54,14 @@ class Editor
 		}
 
 		$attributes['id'] = isset($attributes['id']) ? (int) sanitize_text_field($attributes['id']) : 0;
+		$form_settings = [];
+		if($attributes['id']){
+			$form_settings = get_post_meta($attributes['id'], 'fe_form_settings', true);
+		}
 
 		$post_id       = 'new';
 		$editor_data   = 'new';
-		$button_text   = __('Publish', FE_TEXT_DOMAIN);
+		$button_text   = isset( $form_settings['submit_text'] ) ? $form_settings['submit_text'] : __( 'Publish', FE_TEXT_DOMAIN);
 		$html_content  = '';
 		$new_post_link = self::get_editor_page_link();
 
@@ -113,7 +117,7 @@ class Editor
 			$post         = get_post($post_id);
 			$html_content = $post->post_content;
 
-			$button_text = __('Update', FE_TEXT_DOMAIN);
+			$button_text = isset( $form_settings['post_update_button_text'] ) ? $form_settings['post_update_button_text'] : __( 'Update', FE_TEXT_DOMAIN);
 		} else {
 			$editor_data = self::example_editor_data();
 		}

@@ -176,12 +176,14 @@ class SavePost
 		} else {
 			set_post_thumbnail($post_id, $thumb_img_id);
 		}
+		$update_message = isset($_POST['update_message']) ? $_POST['update_message'] : __('Post updated', FE_TEXT_DOMAIN);
+		$post_added_message = isset($_POST['post_added_message']) ? $_POST['post_added_message'] : __('New post created', FE_TEXT_DOMAIN);
 
 		wp_send_json_success(
 			array(
 				'url'     => get_the_permalink($post_id),
 				'post_id' => $post_id,
-				'message' => ('new' === $post_id) ? __('New post created', FE_TEXT_DOMAIN) : __('Post updated', FE_TEXT_DOMAIN),
+				'message' => ('new' === $post_id) ? $post_added_message : $update_message,
 			)
 		);
 	}

@@ -1,5 +1,7 @@
 <?php
-$comment_status        = isset( $form_settings['comment_status'] ) ? $form_settings['comment_status'] : 'open';
+$comment_status        = isset($form_settings['comment_status']) ? $form_settings['comment_status'] : 'open';
+$submit_text           = isset( $form_settings['submit_text'] ) ? $form_settings['submit_text'] : __( 'Submit', FE_TEXT_DOMAIN);
+$post_added_message = isset($form_settings['post_added_message']) ? $form_settings['post_added_message'] : __('New post created', FE_TEXT_DOMAIN);
 ?>
 <table class="form-table">
     <tr class="setting">
@@ -38,6 +40,18 @@ $comment_status        = isset( $form_settings['comment_status'] ) ? $form_setti
                 <option value="open" <?php selected($comment_status, 'open'); ?>><?php esc_html_e('Open', FE_TEXT_DOMAIN); ?></option>
                 <option value="closed" <?php selected($comment_status, 'closed'); ?>><?php esc_html_e('Closed', FE_TEXT_DOMAIN); ?></option>
             </select>
+        </td>
+    </tr>
+    <tr class="setting-submit-text">
+        <th><?php esc_html_e('Submit Post Button text', 'wp-user-frontend'); ?></th>
+        <td>
+            <input type="text" name="settings[submit_text]" value="<?php echo esc_attr($submit_text); ?>">
+        </td>
+    </tr>
+    <tr class="setting-post_added_message">
+        <th><?php esc_html_e('Post Added Message', FE_TEXT_DOMAIN); ?></th>
+        <td>
+            <textarea rows="3" cols="40" name="settings[post_added_message]"><?php echo esc_textarea($post_added_message); ?></textarea>
         </td>
     </tr>
 </table>

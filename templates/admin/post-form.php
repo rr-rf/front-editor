@@ -69,7 +69,7 @@ $form_settings = get_post_meta($post_ID, 'fe_form_settings', true);
         <div id="post-form-settings" class="group top clearfix">
             <fieldset>
                 <h2 id="fe-form-builder-settings-tabs" class="nav-tab-wrapper">
-                    <a href="#fe-metabox-settings" class="nav-tab sub nav-tab-active">Post Settings</a>
+                    <a href="#fe-metabox-settings-post" class="nav-tab sub nav-tab-active">Post Settings</a>
                     <a href="#fe-metabox-settings-update" class="nav-tab sub ">Edit Settings</a>
                     <a href="#fe-metabox-submission-restriction" class="nav-tab sub ">Submission Restriction</a>
                     <a href="#fe-metabox-settings-payment" class="nav-tab sub ">Payment Settings</a>
@@ -78,8 +78,11 @@ $form_settings = get_post_meta($post_ID, 'fe_form_settings', true);
                 </h2>
             </fieldset>
             <div class="sub_field_groups_container">
-                <div id="fe-metabox-settings" class="group sub active">
+                <div id="fe-metabox-settings-post" class="group sub active">
                     <?php require_once __DIR__ .'/html/form-settings-post.php' ?>
+                </div>
+                <div id="fe-metabox-settings-update" class="group sub">
+                    <?php require_once __DIR__ .'/html/form-settings-post-update.php' ?>
                 </div>
             </div>
 
