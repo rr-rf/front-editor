@@ -3898,9 +3898,15 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
   // Make plugin menu active if we in editing page
   $('li.wp-has-current-submenu').removeClass('wp-has-current-submenu');
   $('li.toplevel_page_front_editor_settings').addClass('wp-has-current-submenu');
-  $('.nav-tab').click(function (ev) {
-    $('.nav-tab').removeClass('nav-tab-active');
-    $('.group').removeClass('active');
+  $('.nav-tab.top').click(function (ev) {
+    $('.nav-tab.top').removeClass('nav-tab-active');
+    $('.group.top').removeClass('active');
+    $(ev.target).addClass('nav-tab-active');
+    $($(ev.target).attr('href')).addClass('active');
+  });
+  $('.nav-tab.sub').click(function (ev) {
+    $('.nav-tab.sub').removeClass('nav-tab-active');
+    $('.group.sub').removeClass('active');
     $(ev.target).addClass('nav-tab-active');
     $($(ev.target).attr('href')).addClass('active');
   });

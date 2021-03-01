@@ -133,8 +133,10 @@ class SavePost
 		if (fe_fs()->is__premium_only()) {
 			$post_data['post_type'] = isset($_POST['fe_post_type']) ? sanitize_text_field($_POST['fe_post_type']) : 'post';
 		}
+		
 		$post_data['post_status'] = isset($_POST['fe_post_status']) ? sanitize_text_field($_POST['fe_post_status']) : 'publish';
 
+		$post_data['comment_status'] = isset($_POST['comment_status']) ? sanitize_text_field($_POST['comment_status']) : 'open';
 
 		/**
 		 * Before post creation or update

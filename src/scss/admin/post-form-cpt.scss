@@ -14,9 +14,11 @@
     }
 
     .settings-header {
-        display: flex;
-        justify-content: space-between;
         margin-top: 20px;
+        &.primary{
+            display: flex;
+            justify-content: space-between;
+        }
         #save-form-post {
             align-self: baseline;
             white-space: nowrap;
@@ -60,5 +62,34 @@
             padding: 0px;
             padding-left: 5px;
         }
+    }
+    #fe-form-builder-settings-tabs {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 170px;
+        border-bottom: 0;
+        overflow: hidden;
+        .nav-tab {
+            width: calc(100% - -1px);
+            margin-left: 0;
+            margin-bottom: 0.5em;
+            border-right: 1px solid #cccccc;
+            border-bottom: 1px solid #cccccc;
+            font-weight: 400;
+            font-size: 13px;
+            &.nav-tab-active {
+                background: white;
+            }
+        }
+    }
+    .sub_field_groups_container {
+        margin-left: 170px;
+        border-left: 1px solid #cccccc;
+        padding-left: 20px;
+    }
+
+    fieldset {
+        position: relative;
     }
 }

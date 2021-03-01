@@ -3,9 +3,17 @@ export default ($, Swal) => {
     $('li.wp-has-current-submenu').removeClass('wp-has-current-submenu')
     $('li.toplevel_page_front_editor_settings').addClass('wp-has-current-submenu')
 
-    $('.nav-tab').click((ev) => {
-        $('.nav-tab').removeClass('nav-tab-active')
-        $('.group').removeClass('active')
+    $('.nav-tab.top').click((ev) => {
+        $('.nav-tab.top').removeClass('nav-tab-active')
+        $('.group.top').removeClass('active')
+
+        $(ev.target).addClass('nav-tab-active')
+        $($(ev.target).attr('href')).addClass('active')
+    });
+
+    $('.nav-tab.sub').click((ev) => {
+        $('.nav-tab.sub').removeClass('nav-tab-active')
+        $('.group.sub').removeClass('active')
 
         $(ev.target).addClass('nav-tab-active')
         $($(ev.target).attr('href')).addClass('active')
